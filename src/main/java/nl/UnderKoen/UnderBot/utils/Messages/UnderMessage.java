@@ -1,5 +1,6 @@
-package nl.UnderKoen.UnderBot.utils.messages;
+package nl.UnderKoen.UnderBot.utils.Messages;
 
+import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.MessageEmbed.*;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -23,7 +24,7 @@ public interface UnderMessage {
         return null;
     }
 
-    public default List<Field> getFields(){
+    public default List<Field> getFields() {
         return new ArrayList<Field>();
     }
 
@@ -35,12 +36,11 @@ public interface UnderMessage {
         return null;
     }
 
-    public default String getUrl() {
-        return null;
-    }
-
     public default void sendMessage(TextChannel channel) {
-        MessageEmbedImpl msg = new MessageEmbedImpl();
+
+        EmbedBuilder msg = new EmbedBuilder();
+
+        //MessageEmbedImpl msg = new MessageEmbedImpl();
 
         Color color = getColor();
         if (color != null) {
@@ -49,19 +49,19 @@ public interface UnderMessage {
 
         User author = getAuthor();
         if (author != null) {
-            msg.setAuthor(new MessageEmbed.AuthorInfo(author.getName(), "", author.getAvatarUrl(), ""));
+            msg.setAuthor(author.getName(), null, author.getAvatarUrl());
         }
 
         List<Field> fields = getFields();
         if (fields != null) {
-            msg.setFields(fields);
-        } else {
-            msg.setFields(new ArrayList<Field>());
+            for (Field field : fields) {
+                msg.addField(field);
+            }
         }
 
         Footer footer = getFooter();
         if (footer != null) {
-            msg.setFooter(footer);
+            msg.setFooter(footer.getText(), footer.getIconUrl());
         }
 
         String desc = getDescription();
@@ -69,11 +69,6 @@ public interface UnderMessage {
             msg.setDescription(desc);
         }
 
-        String url = getUrl();
-        if (url != null) {
-            msg.setUrl(url);
-        }
-
-        channel.sendMessage(msg).complete();
+        channel.sendMessage(msg.build()).complete();
     }
 }

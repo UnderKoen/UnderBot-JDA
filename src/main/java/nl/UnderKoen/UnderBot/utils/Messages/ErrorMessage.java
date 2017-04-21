@@ -1,7 +1,8 @@
-package nl.UnderKoen.UnderBot.utils.messages;
+package nl.UnderKoen.UnderBot.utils.Messages;
 
 import net.dv8tion.jda.core.entities.MessageEmbed.Field;
 import net.dv8tion.jda.core.entities.User;
+import nl.UnderKoen.UnderBot.utils.Messages.UnderMessage;
 
 import java.awt.Color;
 import java.util.ArrayList;

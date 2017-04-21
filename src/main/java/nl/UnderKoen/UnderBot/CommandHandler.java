@@ -28,6 +28,10 @@ public class CommandHandler extends ListenerAdapter {
         this.prefix = prefix;
     }
 
+    public ArrayList<Command> getAllCommands() {
+        return new ArrayList<Command>(commands.values());
+    }
+
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         String messageContent = event.getMessage().getContent();

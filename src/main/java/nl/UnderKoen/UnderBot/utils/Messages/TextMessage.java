@@ -1,28 +1,33 @@
-package nl.UnderKoen.UnderBot.utils.messages;
+package nl.UnderKoen.UnderBot.utils.Messages;
 
-import net.dv8tion.jda.core.entities.MessageEmbed.*;
 import net.dv8tion.jda.core.entities.User;
+import nl.UnderKoen.UnderBot.utils.ColorUtil;
 
 import java.awt.*;
-import java.util.*;
 
 /**
  * Created by Under_Koen on 21-04-17.
  */
 public class TextMessage implements UnderMessage {
-    private Color color = Color.BLUE;
+    private Color color = ColorUtil.hexToColor("#2a6886");
 
     private User user;
 
     private String message;
 
-    private java.util.List<Field> fields;
-
-    public TextMessage(User user, String message) {
+    public TextMessage addMention(User user) {
         this.user = user;
-        fields = new ArrayList<Field>();
-        fields.add(new Field(":", message, false));
-        this.message = message;
+        return this;
+    }
+
+    public TextMessage addText(String text) {
+        if (message == null) {
+            message = "";
+        } else {
+            message = message + "\n";
+        }
+        message = message + text;
+        return this;
     }
 
     @Override
@@ -38,10 +43,5 @@ public class TextMessage implements UnderMessage {
     @Override
     public String getDescription() {
         return message;
-    }
-
-    @Override
-    public java.util.List<Field> getFields() {
-        return fields;
     }
 }
