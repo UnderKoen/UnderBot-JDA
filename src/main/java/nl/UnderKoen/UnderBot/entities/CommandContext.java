@@ -5,19 +5,19 @@ import net.dv8tion.jda.core.entities.*;
  * Created by Under_Koen on 19-04-17.
  */
 public interface CommandContext {
-    public String getPrefix();
+    String getPrefix();
 
-    public String getCommand();
+    String getCommand();
 
-    public String[] getArgs();
+    String[] getArgs();
 
-    public User getUser();
+    User getUser();
 
-    public TextChannel getChannel();
+    TextChannel getChannel();
 
-    public Guild getGuild();
+    Guild getGuild();
 
-    public Member getMember();
+    Member getMember();
 
-    public Message getMessage();
+    Message getMessage();
 }

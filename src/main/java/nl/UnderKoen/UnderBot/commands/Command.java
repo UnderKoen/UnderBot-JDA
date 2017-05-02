@@ -1,19 +1,18 @@
 package nl.UnderKoen.UnderBot.commands;
 
 import nl.UnderKoen.UnderBot.entities.CommandContext;
-import sun.plugin2.message.Message;
-
-import java.sql.Timestamp;
 
 /**
  * Created by Under_Koen on 19-04-17.
  */
 public interface Command {
-    public String getCommand();
+    String getCommand();
 
-    public String getUsage();
+    String getUsage();
 
-    public String getDescription();
+    String getDescription();
 
-    public void run(CommandContext context);
+    void setup() throws  Exception;
+
+    void run(CommandContext context) throws Exception;
 }

@@ -16,27 +16,23 @@ import java.util.List;
  */
 public interface UnderMessage {
 
-    public default Color getColor() {
+    default Color getColor() {
         return null;
     }
 
-    public default User getAuthor() {
+    default User getAuthor() {
         return null;
     }
 
-    public default List<Field> getFields() {
+    default List<Field> getFields() {
         return new ArrayList<Field>();
     }
 
-    public default Footer getFooter() {
+    default String getDescription() {
         return null;
     }
 
-    public default String getDescription() {
-        return null;
-    }
-
-    public default void sendMessage(TextChannel channel) {
+    default void sendMessage(TextChannel channel) {
 
         EmbedBuilder msg = new EmbedBuilder();
 
@@ -49,7 +45,7 @@ public interface UnderMessage {
 
         User author = getAuthor();
         if (author != null) {
-            msg.setAuthor(author.getName(), null, author.getAvatarUrl());
+            msg.setFooter(author.getName(), author.getAvatarUrl());
         }
 
         List<Field> fields = getFields();
@@ -57,11 +53,6 @@ public interface UnderMessage {
             for (Field field : fields) {
                 msg.addField(field);
             }
-        }
-
-        Footer footer = getFooter();
-        if (footer != null) {
-            msg.setFooter(footer.getText(), footer.getIconUrl());
         }
 
         String desc = getDescription();

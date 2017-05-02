@@ -18,6 +18,11 @@ public class CommandHandler extends ListenerAdapter {
     private String prefix;
 
     public void initializeCommand(Command command) {
+        try {
+            command.setup();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         String commandName = command.getCommand();
         if (commands.containsKey(commandName)) throw new AlreadyInitializedException();
         commands.put(commandName, command);
@@ -71,7 +76,11 @@ public class CommandHandler extends ListenerAdapter {
 
         Command command = commands.get(commandName);
 
-        command.run(context);
+        try {
+            command.run(context);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
 
         try {
             message.delete().complete();

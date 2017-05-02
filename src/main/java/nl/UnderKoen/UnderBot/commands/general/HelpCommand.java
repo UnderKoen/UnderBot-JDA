@@ -4,7 +4,6 @@ import nl.UnderKoen.UnderBot.Main;
 import nl.UnderKoen.UnderBot.commands.Command;
 import nl.UnderKoen.UnderBot.entities.CommandContext;
 import nl.UnderKoen.UnderBot.utils.Messages.HelpMessage;
-import nl.UnderKoen.UnderBot.utils.Messages.TextMessage;
 
 /**
  * Created by Under_Koen on 21-04-17.
@@ -29,10 +28,17 @@ public class HelpCommand implements Command {
         return description;
     }
 
+    @Override
+    public void setup() throws Exception {
+
+    }
 
     @Override
     public void run(CommandContext context) {
-        new HelpMessage(Main.handler.getAllCommands(), context.getUser())
+        new HelpMessage()
+                .addMention(context.getUser())
+                .addText("All available commands are:")
+                .addCommands(Main.handler.getAllCommands())
                 .sendMessage(context.getChannel());
     }
 }

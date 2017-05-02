@@ -12,7 +12,6 @@ import java.util.List;
  * Created by Under_Koen on 19-04-17.
  */
 public class ErrorMessage implements UnderMessage {
-
     private Color color = Color.RED;
 
     private User user;

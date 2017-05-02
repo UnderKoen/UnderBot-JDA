@@ -28,6 +28,10 @@ public class InfoCommand implements Command {
         return description;
     }
 
+    @Override
+    public void setup() throws Exception {
+
+    }
 
     @Override
     public void run(CommandContext context) {

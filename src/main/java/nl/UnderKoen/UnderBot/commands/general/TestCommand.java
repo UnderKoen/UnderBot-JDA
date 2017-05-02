@@ -3,6 +3,7 @@ package nl.UnderKoen.UnderBot.commands.general;
 import nl.UnderKoen.UnderBot.Main;
 import nl.UnderKoen.UnderBot.commands.Command;
 import nl.UnderKoen.UnderBot.entities.CommandContext;
+import nl.UnderKoen.UnderBot.utils.Messages.EmoteMessage;
 import nl.UnderKoen.UnderBot.utils.Messages.TextMessage;
 
 import java.awt.*;
@@ -31,10 +32,11 @@ public class TestCommand implements Command {
     }
 
     @Override
+    public void setup() throws Exception {
+
+    }
+
+    @Override
     public void run(CommandContext context) {
-        new TextMessage().addMention(context.getUser())
-                .addText("The current version of the bot is: " + Main.version)
-                .addText("Use /changelog for the more detail")
-                .sendMessage(context.getChannel());
     }
 }

@@ -19,16 +19,38 @@ public class HelpMessage implements UnderMessage {
 
     private User user;
 
-    private String message = "All currently available commands are:";
+    private String message;
 
     private List<MessageEmbed.Field> fields;
 
-    public HelpMessage(ArrayList<Command> commands, User author) {
-        user = author;
-        fields = new ArrayList<MessageEmbed.Field>();
-        for (Command command : Main.handler.getAllCommands()) {
-            fields.add(new MessageEmbed.Field(command.getUsage(), command.getDescription(), true));
+    public HelpMessage addMention(User user) {
+        this.user = user;
+        return this;
+    }
+
+    public HelpMessage addText(String text) {
+        if (message == null) {
+            message = "";
+        } else {
+            message = message + "\n";
         }
+        message = message + text;
+        return this;
+    }
+
+    public HelpMessage addCommand(Command command) {
+        if (fields == null) {
+            fields = new ArrayList<MessageEmbed.Field>();
+        }
+        fields.add(new MessageEmbed.Field(command.getUsage(), command.getDescription(), false));
+        return this;
+    }
+
+    public HelpMessage addCommands(ArrayList<Command> commands) {
+        for (Command command: commands) {
+            addCommand(command);
+        }
+        return this;
     }
 
     @Override
