@@ -1,6 +1,7 @@
 package nl.UnderKoen.UnderBot.utils.Messages;
 
 import net.dv8tion.jda.core.EmbedBuilder;
+import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.MessageEmbed.*;
 import net.dv8tion.jda.core.entities.TextChannel;
@@ -60,6 +61,16 @@ public interface UnderMessage {
             msg.setDescription(desc);
         }
 
-        channel.sendMessage(msg.build()).complete();
+        Message ms = channel.sendMessage(msg.build()).complete();
+
+        new java.util.Timer().schedule(
+                new java.util.TimerTask() {
+                    @Override
+                    public void run() {
+                        ms.delete().complete();
+                    }
+                },
+                1000 * 60 * 5
+        );
     }
 }

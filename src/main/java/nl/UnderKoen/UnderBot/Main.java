@@ -1,9 +1,5 @@
 package nl.UnderKoen.UnderBot;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
@@ -13,12 +9,7 @@ import nl.UnderKoen.UnderBot.commands.Command;
 import javax.security.auth.login.LoginException;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -30,7 +21,7 @@ public class Main {
     public static JDA jda;
     public static CommandHandler handler;
 
-    public static String version = "0.0.1";
+    public static String version = "0.0.2";
 
     public static void main(String[] args) {handler = new CommandHandler("/");
         try {

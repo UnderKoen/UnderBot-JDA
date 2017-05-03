@@ -1,6 +1,6 @@
 {
-  "ADDED":["Command handlers", "Help command", "Info command", "Changelog command", "Emote command"],
+  "ADDED":[],
   "REMOVED": [],
-  "FIXED":["InitializeAllCommands"],
-  "TODO": ["Aandacht command", "Timeout command", "Livestreamcheck", "Music"]
+  "FIXED":["Typo's"],
+  "TODO": ["Timeout command", "Livestreamcheck", "Music"]
 }

@@ -1,12 +1,7 @@
 package nl.UnderKoen.UnderBot.commands.general;
 
-import nl.UnderKoen.UnderBot.Main;
 import nl.UnderKoen.UnderBot.commands.Command;
 import nl.UnderKoen.UnderBot.entities.CommandContext;
-import nl.UnderKoen.UnderBot.utils.Messages.EmoteMessage;
-import nl.UnderKoen.UnderBot.utils.Messages.TextMessage;
-
-import java.awt.*;
 
 /**
  * Created by Under_Koen on 19-04-17.

@@ -2,6 +2,7 @@ package nl.UnderKoen.UnderBot.commands.general;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import net.dv8tion.jda.core.entities.User;
 import nl.UnderKoen.UnderBot.Main;
 import nl.UnderKoen.UnderBot.commands.Command;
 import nl.UnderKoen.UnderBot.entities.CommandContext;
@@ -15,12 +16,12 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * Created by Under_Koen on 02-05-17.
+ * Created by Under_Koen on 03-05-17.
  */
-public class EmoteCommand implements Command {
-    private String command = "emote";
-    private String usage = "/emote [text...]";
-    private String description = "Sends your message in emote style";
+public class AandachtCommand implements Command {
+    private String command = "aandacht";
+    private String usage = "/aandacht";
+    private String description = "Sends a line from AANDACHT - Kud";
 
     @Override
     public String getCommand() {
@@ -40,26 +41,28 @@ public class EmoteCommand implements Command {
     @Override
     public void setup() throws Exception {
         File file = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
-        file = new File(file.getParent() + "/Emote.json");
-        if (file.exists()) return;
-        file.createNewFile();
-        try {
-            FileWriter fileWriter = new FileWriter(file);
-            fileWriter.write(getEmotesResource());
-            fileWriter.flush();
-            fileWriter.close();
-        } catch (Exception e) {
-            e.printStackTrace();
+        file = new File(file.getParent() + "/Aandacht.txt");
+        if (!file.exists()) {
+            file.createNewFile();
+            try {
+                FileWriter fileWriter = new FileWriter(file);
+                fileWriter.write(getAandachtResource());
+                fileWriter.flush();
+                fileWriter.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+        aandacht = getAandacht();
     }
 
-    private String getEmotesResource() {
+    private String getAandachtResource() {
 
         StringBuilder result = new StringBuilder("");
 
         //Get file from resources folder
         ClassLoader classLoader = getClass().getClassLoader();
-        InputStream file = classLoader.getResourceAsStream("Emote.json");
+        InputStream file = classLoader.getResourceAsStream("Aandacht.txt");
 
         try (Scanner scanner = new Scanner(file)) {
 
@@ -75,22 +78,21 @@ public class EmoteCommand implements Command {
         }
 
         return result.toString();
-
     }
 
-    private String getEmotes() {
+    private ArrayList<String> getAandacht() {
 
-        StringBuilder result = new StringBuilder("");
+        ArrayList<String> result = new ArrayList<String>();
 
         try {
             File file = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
-            file = new File(file.getParent() + "/Emote.txt");
+            file = new File(file.getParent() + "/Aandacht.txt");
 
             try (Scanner scanner = new Scanner(file)) {
 
                 while (scanner.hasNextLine()) {
                     String line = scanner.nextLine();
-                    result.append(line).append("\n");
+                    result.add(line);
                 }
 
                 scanner.close();
@@ -100,31 +102,23 @@ public class EmoteCommand implements Command {
             }
         } catch (Exception e) {}
 
-        return result.toString();
+        return result;
     }
+
+    private ArrayList<String> aandacht;
+    private int current = 0;
+    private User last;
 
     @Override
     public void run(CommandContext context) throws Exception {
-        if (context.getArgs().length == 0) {
-            new ErrorMessage(context.getUser(), "No text to change to emote text")
-                    .sendMessage(context.getChannel());
-            return;
-        }
-        String args = "";
-        for (String arg: context.getArgs()) {
-            args = args + arg + " ";
-        }
-        args = args.trim();
-        String text = "";
-        JsonParser parser = new JsonParser();
-        JsonObject o = parser.parse(getEmotes()).getAsJsonObject();
-        for (char Char: args.toCharArray()) {
-            if (o.has(Char + "")) {
-                text = text + o.get(Char + "").getAsString() + " ";
+        if (context.getUser() != last) {
+            new TextMessage().addText(aandacht.get(current)).addMention(context.getUser()).sendMessage(context.getChannel());
+            last = context.getUser();
+            if (current == aandacht.size()-1) {
+                current = 0;
             } else {
-                text = text + o.get("none").getAsString() + " ";
+                current = current+1;
             }
         }
-        new TextMessage().addText(text).addMention(context.getUser()).sendMessage(context.getChannel());
     }
 }
