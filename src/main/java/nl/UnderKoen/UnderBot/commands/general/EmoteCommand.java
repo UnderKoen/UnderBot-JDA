@@ -84,7 +84,7 @@ public class EmoteCommand implements Command {
 
         try {
             File file = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
-            file = new File(file.getParent() + "/Emote.txt");
+            file = new File(file.getParent() + "/Emote.json");
 
             try (Scanner scanner = new Scanner(file)) {
 
@@ -114,7 +114,7 @@ public class EmoteCommand implements Command {
         for (String arg: context.getArgs()) {
             args = args + arg + " ";
         }
-        args = args.trim();
+        args = args.trim().toLowerCase();
         String text = "";
         JsonParser parser = new JsonParser();
         JsonObject o = parser.parse(getEmotes()).getAsJsonObject();

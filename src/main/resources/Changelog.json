@@ -1,6 +1,6 @@
 {
   "ADDED":[],
   "REMOVED": [],
-  "FIXED":["Typo's"],
+  "FIXED":["Emote capital letters"],
   "TODO": ["Timeout command", "Livestreamcheck", "Music"]
 }

@@ -21,7 +21,7 @@ public class Main {
     public static JDA jda;
     public static CommandHandler handler;
 
-    public static String version = "0.0.2";
+    public static String version = "0.0.3";
 
     public static void main(String[] args) {handler = new CommandHandler("/");
         try {
@@ -36,7 +36,6 @@ public class Main {
         } catch (RateLimitedException e) {
             e.printStackTrace();
         }
-
         initializeAllCommands("nl.UnderKoen.UnderBot.commands", handler);
     }
 
