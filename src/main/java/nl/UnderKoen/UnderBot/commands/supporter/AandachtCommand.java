@@ -1,12 +1,9 @@
-package nl.UnderKoen.UnderBot.commands.general;
+package nl.UnderKoen.UnderBot.commands.supporter;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import net.dv8tion.jda.core.entities.User;
 import nl.UnderKoen.UnderBot.Main;
 import nl.UnderKoen.UnderBot.commands.Command;
 import nl.UnderKoen.UnderBot.entities.CommandContext;
-import nl.UnderKoen.UnderBot.utils.Messages.ErrorMessage;
 import nl.UnderKoen.UnderBot.utils.Messages.TextMessage;
 
 import java.io.File;
@@ -22,6 +19,12 @@ public class AandachtCommand implements Command {
     private String command = "aandacht";
     private String usage = "/aandacht";
     private String description = "Sends a line from AANDACHT - Kud";
+    private int minimumRole = 1;
+
+    @Override
+    public int getMinimumRole() {
+        return minimumRole;
+    }
 
     @Override
     public String getCommand() {
@@ -112,7 +115,7 @@ public class AandachtCommand implements Command {
     @Override
     public void run(CommandContext context) throws Exception {
         if (context.getUser() != last) {
-            new TextMessage().addText(aandacht.get(current)).addMention(context.getUser()).sendMessage(context.getChannel());
+            new TextMessage().addText(aandacht.get(current)).setMention(context.getUser()).sendMessage(context.getChannel());
             last = context.getUser();
             if (current == aandacht.size()-1) {
                 current = 0;

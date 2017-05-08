@@ -11,6 +11,8 @@ public interface CommandContext {
 
     String[] getArgs();
 
+    String[] getRawArgs();
+
     User getUser();
 
     TextChannel getChannel();

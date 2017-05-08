@@ -11,6 +11,7 @@ public class CommandContextImpl implements CommandContext {
     private String prefix;
     private String command;
     private String[] args;
+    private String[] rawArgs;
     private User user;
     private TextChannel channel;
     private Guild guild;
@@ -44,6 +45,16 @@ public class CommandContextImpl implements CommandContext {
 
     public CommandContextImpl setArgs(String[] args) {
         this.args = args;
+        return this;
+    }
+
+    @Override
+    public String[] getRawArgs() {
+        return rawArgs;
+    }
+
+    public CommandContextImpl setRawArgs(String[] rawArgs) {
+        this.rawArgs = rawArgs;
         return this;
     }
 

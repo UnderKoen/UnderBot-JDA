@@ -1,4 +1,4 @@
-package nl.UnderKoen.UnderBot.commands.general;
+package nl.UnderKoen.UnderBot.commands.supporter;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -21,6 +21,12 @@ public class EmoteCommand implements Command {
     private String command = "emote";
     private String usage = "/emote [text...]";
     private String description = "Sends your message in emote style";
+    private int minimumRole = 1;
+
+    @Override
+    public int getMinimumRole() {
+        return minimumRole;
+    }
 
     @Override
     public String getCommand() {
@@ -125,6 +131,6 @@ public class EmoteCommand implements Command {
                 text = text + o.get("none").getAsString() + " ";
             }
         }
-        new TextMessage().addText(text).addMention(context.getUser()).sendMessage(context.getChannel());
+        new TextMessage().addText(text).setMention(context.getUser()).sendMessage(context.getChannel());
     }
 }

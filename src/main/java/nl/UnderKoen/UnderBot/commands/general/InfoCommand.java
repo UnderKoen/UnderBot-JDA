@@ -35,7 +35,7 @@ public class InfoCommand implements Command {
 
     @Override
     public void run(CommandContext context) {
-        new TextMessage().addMention(context.getUser())
+        new TextMessage().setMention(context.getUser())
                 .addText("The current version of the bot is: " + Main.version)
                 .addText("Use /changelog for more detail")
                 .sendMessage(context.getChannel());

@@ -12,6 +12,10 @@ public interface Command {
 
     String getDescription();
 
+    default int getMinimumRole() {
+        return 0;
+    }
+
     void setup() throws  Exception;
 
     void run(CommandContext context) throws Exception;

@@ -36,7 +36,7 @@ public class HelpCommand implements Command {
     @Override
     public void run(CommandContext context) {
         new HelpMessage()
-                .addMention(context.getUser())
+                .setMention(context.getUser())
                 .addText("All available commands are:")
                 .addCommands(Main.handler.getAllCommands())
                 .sendMessage(context.getChannel());

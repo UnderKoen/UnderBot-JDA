@@ -1,17 +1,19 @@
 package nl.UnderKoen.UnderBot.commands.general;
 
-import com.google.gson.*;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import nl.UnderKoen.UnderBot.Main;
 import nl.UnderKoen.UnderBot.commands.Command;
 import nl.UnderKoen.UnderBot.entities.CommandContext;
 import nl.UnderKoen.UnderBot.utils.Messages.ErrorMessage;
 import nl.UnderKoen.UnderBot.utils.Messages.TextMessage;
 
-import java.io.*;
-import java.net.URISyntaxException;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.Scanner;
-import java.util.stream.Stream;
 
 /**
  * Created by Under_Koen on 23-04-17.
@@ -123,7 +125,7 @@ public class ChangelogCommand implements Command {
         for (JsonElement obj: o.get("TODO").getAsJsonArray()) {
             todo = todo + "- " + obj.getAsString() + "\n";
         }
-        TextMessage message = new TextMessage().addMention(context.getUser()).addText("The changelog of version " + version);
+        TextMessage message = new TextMessage().setMention(context.getUser()).addText("The changelog of version " + version);
         message.addField("Added", added, false);
         message.addField("Removed", removed, false);
         message.addField("Fixed", fixed, false);

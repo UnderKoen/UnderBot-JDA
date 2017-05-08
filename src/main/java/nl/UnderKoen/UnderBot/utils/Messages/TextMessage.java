@@ -20,7 +20,7 @@ public class TextMessage implements UnderMessage {
 
     private java.util.List<MessageEmbed.Field> fields;
 
-    public TextMessage addMention(User user) {
+    public TextMessage setMention(User user) {
         this.user = user;
         return this;
     }

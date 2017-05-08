@@ -23,7 +23,7 @@ public class HelpMessage implements UnderMessage {
 
     private List<MessageEmbed.Field> fields;
 
-    public HelpMessage addMention(User user) {
+    public HelpMessage setMention(User user) {
         this.user = user;
         return this;
     }

@@ -4,8 +4,11 @@ import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import nl.UnderKoen.UnderBot.commands.Command;
+import nl.UnderKoen.UnderBot.commands.moderator.TimeoutCommand;
 import nl.UnderKoen.UnderBot.entities.impl.CommandContextImpl;
 import nl.UnderKoen.UnderBot.exceptions.AlreadyInitializedException;
+import nl.UnderKoen.UnderBot.utils.Messages.ErrorMessage;
+import nl.UnderKoen.UnderBot.utils.RoleUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,6 +43,12 @@ public class CommandHandler extends ListenerAdapter {
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
         String messageContent = event.getMessage().getContent();
+        String messageRawContent = event.getMessage().getRawContent();
+        if (TimeoutCommand.isTimeouted(event.getAuthor())) {
+            event.getMessage().delete().complete();
+            return;
+        }
+
         if (!messageContent.startsWith(prefix)) return;
 
         CommandContextImpl context = new CommandContextImpl();
@@ -51,6 +60,15 @@ public class CommandHandler extends ListenerAdapter {
 
         if (!commands.containsKey(commandName)) return;
 
+        Command command = commands.get(commandName);
+
+        if (RoleUtil.getHighestRole(event.getMember()).getPosition() < command.getMinimumRole()) {
+            new ErrorMessage(event.getAuthor(), "The minimum role for /" + commandName + " is " +
+                    RoleUtil.getRole(event.getGuild(), command.getMinimumRole()).getName()).sendMessage(event.getTextChannel());
+            event.getMessage().delete().complete();
+            return;
+        }
+
         String[] argsTest = messageContent.split(" ");
         ArrayList<String> args = new ArrayList<String>();
         for (String arg : argsTest) {
@@ -58,6 +76,14 @@ public class CommandHandler extends ListenerAdapter {
             args.add(arg);
         }
         context.setArgs(args.toArray(new String[0]));
+
+        String[] rawArgsTest = messageRawContent.split(" ");
+        ArrayList<String> rawArgs = new ArrayList<String>();
+        for (String rawArg : rawArgsTest) {
+            if (rawArgsTest[0] == rawArg) continue;
+            rawArgs.add(rawArg);
+        }
+        context.setRawArgs(rawArgs.toArray(new String[0]));
 
         User user = event.getAuthor();
         context.setUser(user);
@@ -73,8 +99,6 @@ public class CommandHandler extends ListenerAdapter {
 
         Message message = event.getMessage();
         context.setMessage(message);
-
-        Command command = commands.get(commandName);
 
         try {
             command.run(context);

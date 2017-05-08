@@ -3,6 +3,7 @@ package nl.UnderKoen.UnderBot;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
+import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import nl.UnderKoen.UnderBot.commands.Command;
 
@@ -36,6 +37,9 @@ public class Main {
         } catch (RateLimitedException e) {
             e.printStackTrace();
         }
+        /*for (Role role: jda.getGuilds().get(0).getRoles()) {
+            System.out.println(role.getName() + " -=- " + role.getPosition());
+        }//*/
         initializeAllCommands("nl.UnderKoen.UnderBot.commands", handler);
     }
 
@@ -112,6 +116,4 @@ public class Main {
             }
         }
     }
-
-
 }
