@@ -1,6 +1,6 @@
 {
-  "ADDED":[],
+  "ADDED":["Permissions", "Timeout command"],
   "REMOVED": [],
-  "FIXED":["Emote capital letters"],
-  "TODO": ["Timeout command", "Livestreamcheck", "Music"]
+  "FIXED":["Emote capital letters", "Aandacht and emote command for every role"],
+  "TODO": ["Livestreamcheck", "Music", "Customize message style", "Databases for timeouts and message style"]
 }
