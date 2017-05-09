@@ -106,30 +106,36 @@ public class ChangelogCommand implements Command {
         } catch (Exception e) {
             new ErrorMessage(context.getUser(), "The changelog for " + version + " does not exist")
                     .sendMessage(context.getChannel());
+            return;
         }
-        JsonParser parser = new JsonParser();
-        JsonObject o = parser.parse(changelog).getAsJsonObject();
-        String added = "";
-        for (JsonElement obj: o.get("ADDED").getAsJsonArray()) {
-            added = added + "- " + obj.getAsString() + "\n";
+        try {
+            JsonParser parser = new JsonParser();
+            JsonObject o = parser.parse(changelog).getAsJsonObject();
+            String added = "";
+            for (JsonElement obj : o.get("ADDED").getAsJsonArray()) {
+                added = added + "- " + obj.getAsString() + "\n";
+            }
+            String removed = "";
+            for (JsonElement obj : o.get("REMOVED").getAsJsonArray()) {
+                removed = removed + "- " + obj.getAsString() + "\n";
+            }
+            String fixed = "";
+            for (JsonElement obj : o.get("FIXED").getAsJsonArray()) {
+                fixed = fixed + "- " + obj.getAsString() + "\n";
+            }
+            String todo = "";
+            for (JsonElement obj : o.get("TODO").getAsJsonArray()) {
+                todo = todo + "- " + obj.getAsString() + "\n";
+            }
+            TextMessage message = new TextMessage().setMention(context.getUser()).addText("The changelog of version " + version);
+            message.addField("Added", added, false);
+            message.addField("Removed", removed, false);
+            message.addField("Fixed", fixed, false);
+            message.addField("Todo", todo, false);
+            message.sendMessage(context.getChannel());
+        } catch (Exception e) {
+            new ErrorMessage(context.getUser(), "Something went wrong")
+                    .sendMessage(context.getChannel());
         }
-        String removed = "";
-        for (JsonElement obj: o.get("REMOVED").getAsJsonArray()) {
-            removed = removed + "- " + obj.getAsString() + "\n";
-        }
-        String fixed = "";
-        for (JsonElement obj: o.get("FIXED").getAsJsonArray()) {
-            fixed = fixed + "- " + obj.getAsString() + "\n";
-        }
-        String todo = "";
-        for (JsonElement obj: o.get("TODO").getAsJsonArray()) {
-            todo = todo + "- " + obj.getAsString() + "\n";
-        }
-        TextMessage message = new TextMessage().setMention(context.getUser()).addText("The changelog of version " + version);
-        message.addField("Added", added, false);
-        message.addField("Removed", removed, false);
-        message.addField("Fixed", fixed, false);
-        message.addField("Todo", todo, false);
-        message.sendMessage(context.getChannel());
     }
 }

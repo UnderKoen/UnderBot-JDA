@@ -22,7 +22,7 @@ public class Main {
     public static JDA jda;
     public static CommandHandler handler;
 
-    public static String version = "0.0.3";
+    public static String version = "0.0.4";
 
     public static void main(String[] args) {handler = new CommandHandler("/");
         try {
