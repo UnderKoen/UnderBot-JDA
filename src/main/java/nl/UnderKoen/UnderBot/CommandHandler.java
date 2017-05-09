@@ -55,7 +55,7 @@ public class CommandHandler extends ListenerAdapter {
 
         context.setPrefix(prefix);
 
-        String commandName = messageContent.split(" ")[0].trim().replaceFirst(prefix, "");
+        String commandName = messageContent.split(" ")[0].trim().replaceFirst(prefix, "").toLowerCase();
         context.setCommand(commandName);
 
         if (!commands.containsKey(commandName)) return;
@@ -103,6 +103,7 @@ public class CommandHandler extends ListenerAdapter {
         try {
             command.run(context);
         } catch (Exception ex) {
+            new ErrorMessage(context.getUser(), "A error occured").sendMessage(context.getChannel());
             ex.printStackTrace();
         }
 

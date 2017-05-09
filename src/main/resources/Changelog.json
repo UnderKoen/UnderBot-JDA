@@ -1,6 +1,6 @@
 {
-  "ADDED":["Versions command"],
+  "ADDED":["Versions command", "Livestreamcheck"],
   "REMOVED": [],
-  "FIXED":[],
-  "TODO": ["Livestreamcheck", "Music", "Customize message style", "Databases for timeouts and message style"]
+  "FIXED":["Captials in commands"],
+  "TODO": ["Music", "Customize message style", "Databases for timeouts and message style"]
 }

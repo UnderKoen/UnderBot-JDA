@@ -2,6 +2,7 @@ package nl.UnderKoen.UnderBot.commands.general;
 
 import nl.UnderKoen.UnderBot.commands.Command;
 import nl.UnderKoen.UnderBot.entities.CommandContext;
+import nl.UnderKoen.UnderBot.utils.YoutubeUtil;
 
 /**
  * Created by Under_Koen on 19-04-17.
@@ -28,7 +29,6 @@ public class TestCommand implements Command {
 
     @Override
     public void setup() throws Exception {
-
     }
 
     @Override

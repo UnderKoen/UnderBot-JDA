@@ -33,11 +33,17 @@ public interface UnderMessage {
         return null;
     }
 
+    default String getTitle() {
+        return null;
+    }
+
+    default String getUrl() {
+        return null;
+    }
+
     default void sendMessage(TextChannel channel) {
 
         EmbedBuilder msg = new EmbedBuilder();
-
-        //MessageEmbedImpl msg = new MessageEmbedImpl();
 
         Color color = getColor();
         if (color != null) {
@@ -59,6 +65,12 @@ public interface UnderMessage {
         String desc = getDescription();
         if (desc != null) {
             msg.setDescription(desc);
+        }
+
+        String title = getTitle();
+        String url = getUrl();
+        if (title != null) {
+            msg.setTitle(title, url);
         }
 
         Message ms = channel.sendMessage(msg.build()).complete();

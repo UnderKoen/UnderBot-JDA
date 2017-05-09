@@ -18,6 +18,10 @@ public class TextMessage implements UnderMessage {
 
     private String message;
 
+    private String title;
+
+    private String url;
+
     private java.util.List<MessageEmbed.Field> fields;
 
     public TextMessage setMention(User user) {
@@ -41,6 +45,27 @@ public class TextMessage implements UnderMessage {
         }
         fields.add(new MessageEmbed.Field(name, value, inline));
         return this;
+    }
+
+    public TextMessage setTitle(String title) {
+        this.title = title;
+        return this;
+    }
+
+    public TextMessage setTitle(String title, String url) {
+        this.title = title;
+        this.url = url;
+        return this;
+    }
+
+    @Override
+    public String getUrl() {
+        return url;
+    }
+
+    @Override
+    public String getTitle() {
+        return title;
     }
 
     @Override

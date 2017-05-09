@@ -6,6 +6,7 @@ import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import nl.UnderKoen.UnderBot.commands.Command;
+import nl.UnderKoen.UnderBot.utils.YoutubeUtil;
 
 import javax.security.auth.login.LoginException;
 import java.io.File;
@@ -22,9 +23,15 @@ public class Main {
     public static JDA jda;
     public static CommandHandler handler;
 
+    public static String youtubeKey;
+
     public static String version = "0.0.4";
 
     public static void main(String[] args) {handler = new CommandHandler("/");
+        if (args.length < 2) {
+            System.out.println("args  for running this are [Discord key] [Youtebe key]");
+            return;
+        }
         try {
             jda = new JDABuilder(AccountType.BOT)
                     .setToken(args[0])
@@ -37,6 +44,7 @@ public class Main {
         } catch (RateLimitedException e) {
             e.printStackTrace();
         }
+        youtubeKey = args[1];
         /*for (Role role: jda.getGuilds().get(0).getRoles()) {
             System.out.println(role.getName() + " -=- " + role.getPosition());
         }//*/
