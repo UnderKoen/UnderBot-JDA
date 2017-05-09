@@ -63,7 +63,7 @@ public class ChangelogCommand implements Command {
         ClassLoader classLoader = getClass().getClassLoader();
         InputStream file = classLoader.getResourceAsStream("Changelog.json");
 
-        try (Scanner scanner = new Scanner(file)) {
+        try (Scanner scanner = new Scanner(file, "utf-8")) {
 
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();

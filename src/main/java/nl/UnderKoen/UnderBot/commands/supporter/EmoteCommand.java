@@ -67,7 +67,7 @@ public class EmoteCommand implements Command {
         ClassLoader classLoader = getClass().getClassLoader();
         InputStream file = classLoader.getResourceAsStream("Emote.json");
 
-        try (Scanner scanner = new Scanner(file)) {
+        try (Scanner scanner = new Scanner(file, "utf-8")) {
 
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
@@ -92,7 +92,7 @@ public class EmoteCommand implements Command {
             File file = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
             file = new File(file.getParent() + "/Emote.json");
 
-            try (Scanner scanner = new Scanner(file)) {
+            try (Scanner scanner = new Scanner(file, "utf-8")) {
 
                 while (scanner.hasNextLine()) {
                     String line = scanner.nextLine();
