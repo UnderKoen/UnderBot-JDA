@@ -1,6 +1,7 @@
 package nl.UnderKoen.UnderBot.commands.moderator;
 
 import net.dv8tion.jda.core.entities.Member;
+import nl.UnderKoen.UnderBot.Roles;
 import nl.UnderKoen.UnderBot.commands.Command;
 import nl.UnderKoen.UnderBot.entities.CommandContext;
 import nl.UnderKoen.UnderBot.threads.Livestreamcheck;
@@ -17,7 +18,12 @@ public class LivestreamcheckCommand implements Command {
     private String command = "livestreamcheck";
     private String usage = "/livestreamcheck [boolean] (textChannel)]";
     private String description = "Enable/disable livestreamcheck.\n If textChannel is empty it outputs in your current channel.";
+    private int minimumRole = Roles.MOD.role;
 
+    @Override
+    public int getMinimumRole() {
+        return minimumRole;
+    }
     @Override
     public String getCommand() {
         return command;

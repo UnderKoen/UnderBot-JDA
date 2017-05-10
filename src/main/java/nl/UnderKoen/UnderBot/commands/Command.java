@@ -1,5 +1,6 @@
 package nl.UnderKoen.UnderBot.commands;
 
+import nl.UnderKoen.UnderBot.Roles;
 import nl.UnderKoen.UnderBot.entities.CommandContext;
 
 /**
@@ -13,7 +14,7 @@ public interface Command {
     String getDescription();
 
     default int getMinimumRole() {
-        return 0;
+        return Roles.EVERYONE.role;
     }
 
     void setup() throws  Exception;

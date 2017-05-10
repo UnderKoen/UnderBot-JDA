@@ -2,6 +2,7 @@ package nl.UnderKoen.UnderBot.commands.moderator;
 
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
+import nl.UnderKoen.UnderBot.Roles;
 import nl.UnderKoen.UnderBot.commands.Command;
 import nl.UnderKoen.UnderBot.entities.CommandContext;
 import nl.UnderKoen.UnderBot.utils.Messages.ErrorMessage;
@@ -22,7 +23,7 @@ public class TimeoutCommand implements Command {
     private String command = "timeout";
     private String usage = "/timeout [User] [Lenght] (reason...)";
     private String description = "Time out a user so he can't talk. \nLenght like 1d2u10m3s";
-    private int minimumRole = 2;
+    private int minimumRole = Roles.MOD.role;
 
     @Override
     public int getMinimumRole() {

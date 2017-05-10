@@ -2,6 +2,7 @@ package nl.UnderKoen.UnderBot.commands.supporter;
 
 import net.dv8tion.jda.core.entities.User;
 import nl.UnderKoen.UnderBot.Main;
+import nl.UnderKoen.UnderBot.Roles;
 import nl.UnderKoen.UnderBot.commands.Command;
 import nl.UnderKoen.UnderBot.entities.CommandContext;
 import nl.UnderKoen.UnderBot.utils.Messages.TextMessage;
@@ -9,6 +10,7 @@ import nl.UnderKoen.UnderBot.utils.Messages.TextMessage;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -19,7 +21,7 @@ public class AandachtCommand implements Command {
     private String command = "aandacht";
     private String usage = "/aandacht";
     private String description = "Sends a line from AANDACHT - Kud";
-    private int minimumRole = 1;
+    private int minimumRole = Roles.SUPPORTER.role;
 
     @Override
     public int getMinimumRole() {
@@ -67,7 +69,7 @@ public class AandachtCommand implements Command {
         ClassLoader classLoader = getClass().getClassLoader();
         InputStream file = classLoader.getResourceAsStream("Aandacht.txt");
 
-        try (Scanner scanner = new Scanner(file, "utf-8")) {
+        try (Scanner scanner = new Scanner(file, "UTF-8")) {
 
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
@@ -91,13 +93,11 @@ public class AandachtCommand implements Command {
             File file = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
             file = new File(file.getParent() + "/Aandacht.txt");
 
-            try (Scanner scanner = new Scanner(file, "utf-8")) {
-
+            try (Scanner scanner = new Scanner(file, "UTF-8")) {
                 while (scanner.hasNextLine()) {
                     String line = scanner.nextLine();
                     result.add(line);
                 }
-
                 scanner.close();
 
             } catch (Exception e) {

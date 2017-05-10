@@ -3,6 +3,7 @@ package nl.UnderKoen.UnderBot.commands.supporter;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import nl.UnderKoen.UnderBot.Main;
+import nl.UnderKoen.UnderBot.Roles;
 import nl.UnderKoen.UnderBot.commands.Command;
 import nl.UnderKoen.UnderBot.entities.CommandContext;
 import nl.UnderKoen.UnderBot.utils.Messages.ErrorMessage;
@@ -21,7 +22,7 @@ public class EmoteCommand implements Command {
     private String command = "emote";
     private String usage = "/emote [text...]";
     private String description = "Sends your message in emote style";
-    private int minimumRole = 1;
+    private int minimumRole = Roles.SUPPORTER.role;
 
     @Override
     public int getMinimumRole() {
@@ -67,7 +68,7 @@ public class EmoteCommand implements Command {
         ClassLoader classLoader = getClass().getClassLoader();
         InputStream file = classLoader.getResourceAsStream("Emote.json");
 
-        try (Scanner scanner = new Scanner(file, "utf-8")) {
+        try (Scanner scanner = new Scanner(file, "UTF-8")) {
 
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
@@ -92,7 +93,7 @@ public class EmoteCommand implements Command {
             File file = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
             file = new File(file.getParent() + "/Emote.json");
 
-            try (Scanner scanner = new Scanner(file, "utf-8")) {
+            try (Scanner scanner = new Scanner(file, "UTF-8")) {
 
                 while (scanner.hasNextLine()) {
                     String line = scanner.nextLine();
