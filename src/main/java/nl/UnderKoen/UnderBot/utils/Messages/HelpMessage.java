@@ -46,9 +46,24 @@ public class HelpMessage implements UnderMessage {
         return this;
     }
 
-    public HelpMessage addCommands(ArrayList<Command> commands) {
+    public HelpMessage addCommands(List<Command> commands) {
         for (Command command: commands) {
             addCommand(command);
+        }
+        return this;
+    }
+
+    public HelpMessage addSubCommand(Command subCommand) {
+        if (fields == null) {
+            fields = new ArrayList<MessageEmbed.Field>();
+        }
+        fields.add(new MessageEmbed.Field(subCommand.getUsage().replaceFirst(Main.handler.getPrefix(),""), subCommand.getDescription(), false));
+        return this;
+    }
+
+    public HelpMessage addSubCommands(List<Command> subCommands) {
+        for (Command command: subCommands) {
+            addSubCommand(command);
         }
         return this;
     }

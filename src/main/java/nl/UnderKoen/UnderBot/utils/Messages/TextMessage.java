@@ -29,6 +29,11 @@ public class TextMessage implements UnderMessage {
         return this;
     }
 
+    public TextMessage setUrl(String url) {
+        this.url = url;
+        return this;
+    }
+
     public TextMessage addText(String text) {
         if (message == null) {
             message = "";

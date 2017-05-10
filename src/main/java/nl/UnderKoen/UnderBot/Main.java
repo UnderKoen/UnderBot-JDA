@@ -6,6 +6,7 @@ import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import nl.UnderKoen.UnderBot.commands.Command;
+import nl.UnderKoen.UnderBot.music.commands.MusicCommand;
 import nl.UnderKoen.UnderBot.utils.YoutubeUtil;
 
 import javax.security.auth.login.LoginException;
@@ -25,7 +26,7 @@ public class Main {
 
     public static String youtubeKey;
 
-    public static String version = "0.0.4";
+    public static String version = "0.1.0";
 
     public static void main(String[] args) {handler = new CommandHandler("/");
         if (args.length < 2) {
@@ -49,6 +50,7 @@ public class Main {
             System.out.println(role.getName() + " -=- " + role.getPosition());
         }//*/
         initializeAllCommands("nl.UnderKoen.UnderBot.commands", handler);
+        handler.initializeCommand(new MusicCommand());
     }
 
     public static void initializeAllCommands(String pckgname, CommandHandler handler) {
