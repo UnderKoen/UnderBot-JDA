@@ -13,7 +13,7 @@ import nl.UnderKoen.UnderBot.utils.Messages.TextMessage;
  */
 public class JoinCommand implements Command {
     private String command = "join";
-    private String usage = "/music join";
+    private String usage = "join";
     private String description = "Let the bot join your channel";
 
     @Override

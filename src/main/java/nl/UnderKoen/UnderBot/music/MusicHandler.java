@@ -68,6 +68,14 @@ public class MusicHandler {
         return getCurrentTrack(guild) != null;
     }
 
+    public static boolean isPlayingDefaultMusic(Guild guild) {
+        return getCurrentTrack(guild) == getGuildAudioPlayer(guild).scheduler.defaultTrack;
+    }
+
+    public void setDefaultTrack(Guild guild, GuildMusicManager musicManager, AudioTrack track) {
+        musicManager.scheduler.setDefault(track);
+    }
+
     public static AudioTrack getCurrentTrack(Guild guild) {
         return getGuildAudioPlayer(guild).player.getPlayingTrack();
     }

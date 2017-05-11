@@ -13,7 +13,7 @@ import nl.UnderKoen.UnderBot.utils.Messages.TextMessage;
  */
 public class ForceNextCommand implements Command {
     private String command = "forcenext";
-    private String usage = "/music forcenext";
+    private String usage = "forcenext";
     private String description = "Let the bot skip this song.";
 
     @Override
@@ -44,6 +44,10 @@ public class ForceNextCommand implements Command {
     public void run(CommandContext context) {
         if (!MusicHandler.isPlayingMusic(context.getGuild())) {
             new ErrorMessage(context.getUser(), "Bot isn't playing music").sendMessage(context.getChannel());
+            return;
+        }
+        if (MusicHandler.isPlayingDefaultMusic(context.getGuild())) {
+            new ErrorMessage(context.getUser(), "Can't skip default song").sendMessage(context.getChannel());
             return;
         }
         AudioTrack track = MusicHandler.getCurrentTrack(context.getGuild());

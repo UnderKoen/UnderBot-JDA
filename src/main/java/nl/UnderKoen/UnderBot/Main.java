@@ -26,7 +26,7 @@ public class Main {
 
     public static String youtubeKey;
 
-    public static String version = "0.1.0";
+    public static String version = "0.1.1";
 
     public static void main(String[] args) {handler = new CommandHandler("/");
         if (args.length < 2) {

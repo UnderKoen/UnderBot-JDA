@@ -12,7 +12,7 @@ import nl.UnderKoen.UnderBot.utils.Messages.TextMessage;
  */
 public class LeaveCommand implements Command {
     private String command = "leave";
-    private String usage = "/music leave";
+    private String usage = "leave";
     private String description = "Let the bot leave the channel.";
 
     @Override

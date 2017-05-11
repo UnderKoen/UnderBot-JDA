@@ -32,13 +32,13 @@ public interface MainCommand extends Command {
             new HelpMessage().addSubCommands(commands).addText("All availble subcommands for /" + getCommand()).sendMessage(context.getChannel());
         } else {
             for (Command command: commands) {
-                if (RoleUtil.getHighestRole(context.getMember()).getPosition() < command.getMinimumRole()) {
-                    new ErrorMessage(context.getUser(), "The minimum role for /" + command.getCommand() + " is " +
-                            RoleUtil.getRole(context.getGuild(), command.getMinimumRole()).getName()).sendMessage(context.getChannel());
-                    context.getMessage().delete().complete();
-                    return;
-                }
                 if (command.getCommand().contentEquals(context.getArgs()[0])) {
+                    if (RoleUtil.getHighestRole(context.getMember()).getPosition() < command.getMinimumRole()) {
+                        new ErrorMessage(context.getUser(), "The minimum role for /" + command.getCommand() + " is " +
+                                RoleUtil.getRole(context.getGuild(), command.getMinimumRole()).getName()).sendMessage(context.getChannel());
+                        context.getMessage().delete().complete();
+                        return;
+                    }
                     List<String> newArgs = Arrays.asList(context.getArgs());
                     newArgs = new ArrayList<>(newArgs);
                     newArgs.remove(0);

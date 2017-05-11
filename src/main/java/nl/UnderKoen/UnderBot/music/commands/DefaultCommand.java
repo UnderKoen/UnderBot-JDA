@@ -4,6 +4,7 @@ import com.sedmelluq.discord.lavaplayer.player.AudioLoadResultHandler;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import net.dv8tion.jda.core.entities.Member;
 import nl.UnderKoen.UnderBot.Roles;
 import nl.UnderKoen.UnderBot.commands.Command;
 import nl.UnderKoen.UnderBot.entities.CommandContext;
@@ -14,12 +15,12 @@ import nl.UnderKoen.UnderBot.utils.Messages.TextMessage;
 import nl.UnderKoen.UnderBot.utils.RoleUtil;
 
 /**
- * Created by Under_Koen on 10-05-17.
+ * Created by Under_Koen on 11-05-17.
  */
-public class PlayCommand implements Command {
-    private String command = "play";
-    private String usage = "play [url]";
-    private String description = "Let the bot play the song";
+public class DefaultCommand implements Command {
+    private String command = "default";
+    private String usage = "default [url]";
+    private String description = "If the bot runs out of songs plays this song until a song has been added.";
 
     @Override
     public String getCommand() {
@@ -34,6 +35,11 @@ public class PlayCommand implements Command {
     @Override
     public String getDescription() {
         return description;
+    }
+
+    @Override
+    public int getMinimumRole() {
+        return Roles.MOD.role;
     }
 
     @Override
@@ -57,24 +63,12 @@ public class PlayCommand implements Command {
         MusicCommand.musicHandler.playerManager.loadItemOrdered(musicManager, url, new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack track) {
-                int role = RoleUtil.getHighestRole(context.getMember()).getPosition();
-                int durationInMinutes = Math.round(track.getDuration() / 1000 / 60);
-                if (role < Roles.MOD.role) {
-                    if (MusicHandler.getQueue(context.getGuild()).length >= 10) {
-                        new TextMessage().setMention(context.getUser()).addText(MusicHandler.getQueue(context.getGuild()).length + " is the max queue lenght for your role.").sendMessage(context.getChannel());
-                        return;
-                    }
-                    if (durationInMinutes > ((role == Roles.SUPPORTER.role) ? 15 : 5)) {
-                        new TextMessage().setMention(context.getUser()).addText(durationInMinutes + " minutes is to long for your role.").sendMessage(context.getChannel());
-                        return;
-                    }
-                }
-                MusicCommand.musicHandler.playTrack(context.getGuild(), musicManager, track, context);
+                MusicCommand.musicHandler.setDefaultTrack(context.getGuild(), musicManager, track);
             }
 
             @Override
             public void playlistLoaded(AudioPlaylist playlist) {
-                new ErrorMessage(context.getUser(), "Use /music playlist for playing a playlist").sendMessage(context.getChannel());
+                new ErrorMessage(context.getUser(), "Playlist support not added yet").sendMessage(context.getChannel());
             }
 
             @Override

@@ -14,7 +14,7 @@ public class MusicCommand implements MainCommand {
     private String command = "music";
     private String usage = "/music [subcommand]";
     private String description = "This is the main music command.";
-    private Command[] subcommands = {new JoinCommand(), new LeaveCommand(), new PlayCommand(), new QueueCommand(), new ForceNextCommand()};
+    private Command[] subcommands = {new PlayCommand(), new QueueCommand(), new ForceNextCommand(), new JoinCommand(), new LeaveCommand(), new DefaultCommand()};
 
     public static MusicHandler musicHandler;
 

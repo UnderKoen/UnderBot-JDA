@@ -12,7 +12,7 @@ import nl.UnderKoen.UnderBot.utils.Messages.TextMessage;
  */
 public class QueueCommand implements Command {
     private String command = "queue";
-    private String usage = "/music queue";
+    private String usage = "queue";
     private String description = "Outputs the queue of the bot";
 
     @Override

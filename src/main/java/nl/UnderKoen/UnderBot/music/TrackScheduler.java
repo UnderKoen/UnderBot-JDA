@@ -27,6 +27,9 @@ public class TrackScheduler extends AudioEventAdapter {
     }
 
     public void queue(AudioTrack track, CommandContext context) {
+        if (player.getPlayingTrack() == defaultTrack && defaultTrack != null) {
+            player.startTrack(null, false);
+        }
         if (!player.startTrack(track, true)) {
             queue.offer(track);
             new TextMessage().setMention(context.getUser()).addText("Queued [" + track.getInfo().title + "](" + track.getInfo().uri + ") as " + queue.size() + "th").sendMessage(context.getChannel());
@@ -39,9 +42,21 @@ public class TrackScheduler extends AudioEventAdapter {
         queue.clear();
     }
 
+    public AudioTrack defaultTrack;
+
+    public void setDefault(AudioTrack defaultTrack) {
+        this.defaultTrack = defaultTrack;
+    }
+
     public void nextTrack() {
         AudioTrack track = queue.poll();
         player.startTrack(track, false);
+        if (track == null) {
+            if (defaultTrack == null) return;
+            track = defaultTrack.makeClone();
+            defaultTrack = track;
+            player.startTrack(track, true);
+        }
         new TextMessage().addText("Started playing [" + track.getInfo().title + "](" + track.getInfo().uri + ")").sendMessage(MusicHandler.channel);
     }
 
