@@ -5,6 +5,7 @@ import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
 import nl.UnderKoen.UnderBot.entities.CommandContext;
+import nl.UnderKoen.UnderBot.music.commands.NextCommand;
 import nl.UnderKoen.UnderBot.utils.Messages.TextMessage;;
 
 import java.util.concurrent.BlockingQueue;
@@ -49,6 +50,7 @@ public class TrackScheduler extends AudioEventAdapter {
     }
 
     public void nextTrack() {
+        NextCommand.votes.clear();
         AudioTrack track = queue.poll();
         player.startTrack(track, false);
         if (track == null) {

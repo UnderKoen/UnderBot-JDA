@@ -64,6 +64,7 @@ public class DefaultCommand implements Command {
             @Override
             public void trackLoaded(AudioTrack track) {
                 MusicCommand.musicHandler.setDefaultTrack(context.getGuild(), musicManager, track);
+                new TextMessage().setMention(context.getUser()).addText("Set the default track to [" + track.getInfo().title + "](" + track.getInfo().uri + ")").sendMessage(context.getChannel());
             }
 
             @Override

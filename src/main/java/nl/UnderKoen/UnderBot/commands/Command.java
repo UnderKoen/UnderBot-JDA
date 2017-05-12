@@ -13,6 +13,10 @@ public interface Command {
 
     String getDescription();
 
+    default String[] getAliases() {
+        return new String[]{};
+    }
+
     default int getMinimumRole() {
         return Roles.EVERYONE.role;
     }

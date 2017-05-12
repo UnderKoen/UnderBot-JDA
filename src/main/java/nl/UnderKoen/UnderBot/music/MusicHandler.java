@@ -72,12 +72,24 @@ public class MusicHandler {
         return getCurrentTrack(guild) == getGuildAudioPlayer(guild).scheduler.defaultTrack;
     }
 
+    public static boolean hasDefaultMusic(Guild guild) {
+        return getGuildAudioPlayer(guild).scheduler.defaultTrack != null;
+    }
+
     public void setDefaultTrack(Guild guild, GuildMusicManager musicManager, AudioTrack track) {
         musicManager.scheduler.setDefault(track);
     }
 
     public static AudioTrack getCurrentTrack(Guild guild) {
         return getGuildAudioPlayer(guild).player.getPlayingTrack();
+    }
+
+    public static AudioTrack getDefaultTrack(Guild guild) {
+        return getGuildAudioPlayer(guild).scheduler.defaultTrack;
+    }
+
+    public static void setVolume(Guild guild, int volume) {
+        getGuildAudioPlayer(guild).player.setVolume(volume);
     }
 
     public static AudioTrack[] getQueue(Guild guild) {

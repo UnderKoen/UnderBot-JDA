@@ -13,13 +13,16 @@ import nl.UnderKoen.UnderBot.utils.Messages.ErrorMessage;
 import nl.UnderKoen.UnderBot.utils.Messages.TextMessage;
 import nl.UnderKoen.UnderBot.utils.RoleUtil;
 
+import java.util.List;
+import java.util.Random;
+
 /**
  * Created by Under_Koen on 10-05-17.
  */
-public class PlayCommand implements Command {
-    private String command = "play";
-    private String usage = "play [url]";
-    private String description = "Let the bot play the song";
+public class PlaylistCommand implements Command {
+    private String command = "playlist";
+    private String usage = "playlist [url] [amount]";
+    private String description = "Plays random [amount] of songs from the url";
 
     @Override
     public String getCommand() {
@@ -46,6 +49,10 @@ public class PlayCommand implements Command {
             new ErrorMessage(context.getUser(), "This command needs arguments to work").sendMessage(context.getChannel());
             return;
         }
+        if (context.getArgs().length < 2) {
+            new ErrorMessage(context.getUser(), "This command needs more arguments to work").sendMessage(context.getChannel());
+            return;
+        }
         if (!context.getGuild().getSelfMember().getVoiceState().inVoiceChannel()) {
             new ErrorMessage(context.getUser(), "Bot needs to be in a voice channel").sendMessage(context.getChannel());
             return;
@@ -57,24 +64,50 @@ public class PlayCommand implements Command {
         MusicCommand.musicHandler.playerManager.loadItemOrdered(musicManager, url, new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack track) {
+                new ErrorMessage(context.getUser(), "Use /music play for playing a normal video").sendMessage(context.getChannel());
+            }
+
+            @Override
+            public void playlistLoaded(AudioPlaylist playlist) {
+                List<AudioTrack> tracks = playlist.getTracks();
+
+                int amount = 0;
+                try {
+                    amount = Integer.parseInt(context.getArgs()[1]);
+                } catch (Exception e) {
+                    new ErrorMessage(context.getUser(), context.getArgs()[0] + " is no valid integer").sendMessage(context.getChannel());
+                    return;
+                }
                 int role = RoleUtil.getHighestRole(context.getMember()).getPosition();
-                int durationInMinutes = Math.round(track.getDuration() / 1000 / 60);
                 if (role < Roles.MOD.role) {
                     if (MusicHandler.getQueue(context.getGuild()).length >= 10) {
                         new TextMessage().setMention(context.getUser()).addText("You can't add anymore songs queue is full").sendMessage(context.getChannel());
                         return;
                     }
-                    if (durationInMinutes > ((role == Roles.SUPPORTER.role) ? 15 : 5)) {
-                        new TextMessage().setMention(context.getUser()).addText(durationInMinutes + " minutes is to long for your role.").sendMessage(context.getChannel());
+                    if (amount > ((role == Roles.SUPPORTER.role) ? 10 : 5)) {
+                        new TextMessage().setMention(context.getUser()).addText(amount + " is to much for you role.").sendMessage(context.getChannel());
                         return;
                     }
                 }
-                MusicCommand.musicHandler.playTrack(context.getGuild(), musicManager, track, context);
-            }
 
-            @Override
-            public void playlistLoaded(AudioPlaylist playlist) {
-                new ErrorMessage(context.getUser(), "Use /music playlist for playing a playlist").sendMessage(context.getChannel());
+                if (tracks.size() < amount) {
+                    new TextMessage().setMention(context.getUser()).addText("This playlist does not contain enough songs.").sendMessage(context.getChannel());
+                    return;
+                }
+
+                for (int i = 0; i < amount; i++) {
+                    if (role < Roles.MOD.role && MusicHandler.getQueue(context.getGuild()).length >= 10) {
+                        new TextMessage().setMention(context.getUser()).addText("You can't add anymore songs queue is full").sendMessage(context.getChannel());
+                        return;
+                    }
+                    AudioTrack track = tracks.remove(new Random().nextInt(tracks.size()));
+                    int durationInMinutes = Math.round(track.getDuration() / 1000 / 60);
+                    if (durationInMinutes > 5) {
+                        new TextMessage().setMention(context.getUser()).addText("Did not add [" + track.getInfo().title + "](" + track.getInfo().uri + ")" + " because  " + durationInMinutes + " minutes is to long").sendMessage(context.getChannel());
+                        continue;
+                    }
+                    MusicCommand.musicHandler.playTrack(context.getGuild(), musicManager, track, context);
+                }
             }
 
             @Override

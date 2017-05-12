@@ -12,9 +12,11 @@ import java.util.List;
  */
 public class MusicCommand implements MainCommand {
     private String command = "music";
+    private String[] aliases = {"m"};
     private String usage = "/music [subcommand]";
     private String description = "This is the main music command.";
-    private Command[] subcommands = {new PlayCommand(), new QueueCommand(), new ForceNextCommand(), new JoinCommand(), new LeaveCommand(), new DefaultCommand()};
+    private Command[] subcommands = {new PlayCommand(), new PlaylistCommand(), new QueueCommand(), new NextCommand(), new ForceNextCommand(),
+            new JoinCommand(), new LeaveCommand(), new DefaultCommand(), new VolumeCommand()};
 
     public static MusicHandler musicHandler;
 
@@ -30,6 +32,11 @@ public class MusicCommand implements MainCommand {
     @Override
     public String getUsage() {
         return usage;
+    }
+
+    @Override
+    public String[] getAliases() {
+        return aliases;
     }
 
     @Override

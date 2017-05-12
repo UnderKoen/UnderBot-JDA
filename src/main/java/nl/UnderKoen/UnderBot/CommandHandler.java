@@ -1,13 +1,9 @@
 package nl.UnderKoen.UnderBot;
 
-import net.dv8tion.jda.core.audio.AudioSendHandler;
 import net.dv8tion.jda.core.entities.*;
-import net.dv8tion.jda.core.events.channel.voice.VoiceChannelCreateEvent;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
-import net.dv8tion.jda.core.managers.AudioManager;
 import nl.UnderKoen.UnderBot.commands.Command;
-import nl.UnderKoen.UnderBot.commands.MainCommand;
 import nl.UnderKoen.UnderBot.commands.moderator.TimeoutCommand;
 import nl.UnderKoen.UnderBot.entities.impl.CommandContextImpl;
 import nl.UnderKoen.UnderBot.exceptions.AlreadyInitializedException;
@@ -31,8 +27,13 @@ public class CommandHandler extends ListenerAdapter {
             e.printStackTrace();
         }
         String commandName = command.getCommand();
+        String[] aliases = command.getAliases();
         if (commands.containsKey(commandName)) throw new AlreadyInitializedException();
         commands.put(commandName, command);
+        for (String alias: aliases) {
+            if (commands.containsKey(alias)) continue;
+            commands.put(alias, command);
+        }
     }
 
     public CommandHandler(String prefix) {

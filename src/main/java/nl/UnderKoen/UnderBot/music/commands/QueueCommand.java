@@ -43,6 +43,14 @@ public class QueueCommand implements Command {
             return;
         }
         TextMessage msg = new TextMessage().setMention(context.getUser()).addText("The queue is:");
+        if (MusicHandler.hasDefaultMusic(context.getGuild())) {
+            AudioTrack defaultMusic = MusicHandler.getDefaultTrack(context.getGuild());
+            msg.addField("default", "[" + defaultMusic.getInfo().title + "](" + defaultMusic.getInfo().uri + ")", false);
+        }
+        if (MusicHandler.isPlayingDefaultMusic(context.getGuild())) {
+            msg.sendMessage(context.getChannel());
+            return;
+        }
         msg.addField("current", "[" + current.getInfo().title + "](" + current.getInfo().uri + ")", false);
         int count = 1;
         for (AudioTrack track: tracks) {
