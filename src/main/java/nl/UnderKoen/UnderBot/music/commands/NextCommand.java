@@ -62,11 +62,11 @@ public class NextCommand implements Command {
         votes.add(context.getUser());
         AudioTrack track = MusicHandler.getCurrentTrack(context.getGuild());
         new TextMessage().setMention(context.getUser()).addText(context.getMember().getEffectiveName() +
-                " voted to skip [" + track.getInfo().title + "] (" + track.getInfo().uri + ") (" +
+                " voted to skip [" + track.getInfo().title + "](" + track.getInfo().uri + ") (" +
                 votes.size() + "/" + (Math.round(Double.parseDouble(context.getMember().getVoiceState().getChannel().getMembers().size() + "")/2.0) + ")"))
                 .sendMessage(context.getChannel());
         if (votes.size() >= (Math.round(Double.parseDouble(context.getMember().getVoiceState().getChannel().getMembers().size() + "")/2.0))) {
-            new TextMessage().setMention(context.getUser()).addText("Skipped [" + track.getInfo().title + "](" + track.getInfo().uri + ")").sendMessage(context.getChannel());
+            new TextMessage().addText("Skipped [" + track.getInfo().title + "](" + track.getInfo().uri + ")").sendMessage(context.getChannel());
             MusicCommand.musicHandler.skipTrack(context.getGuild());
         }
     }

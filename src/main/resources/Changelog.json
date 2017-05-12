@@ -1,6 +1,6 @@
 {
-  "ADDED":["Versions command", "Livestreamcheck"],
+  "ADDED":[],
   "REMOVED": [],
-  "FIXED":["Captials in commands", "Aandacht Nou, okÃ©"],
-  "TODO": ["Music", "Customize message style", "Databases for timeouts and message style"]
+  "FIXED":["gmt in /timeout", "dubbel livestream melding"],
+  "TODO": ["Customize message style", "Databases for timeouts and message style"]
 }

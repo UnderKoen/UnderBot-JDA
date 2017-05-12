@@ -10,6 +10,7 @@ import nl.UnderKoen.UnderBot.utils.Messages.TextMessage;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
 import java.util.HashMap;
@@ -109,7 +110,7 @@ public class TimeoutCommand implements Command {
         TextMessage msg = new TextMessage().addText("Timeout information")
                 .setMention(context.getUser())
                 .addField("User", member.getAsMention(), false)
-                .addField("Until", Timestamp.valueOf(lenght).toGMTString(), false);
+                .addField("Until", Timestamp.valueOf(lenght).toLocaleString(), false);
         if (context.getRawArgs().length >= 3) {
             StringBuilder str = new StringBuilder();
             int i = 1;

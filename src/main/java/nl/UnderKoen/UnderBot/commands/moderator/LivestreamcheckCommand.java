@@ -56,7 +56,6 @@ public class LivestreamcheckCommand implements Command {
             return;
         }
         Livestreamcheck.Check = Boolean.parseBoolean(context.getArgs()[0]);
-        if (!Livestreamcheck.Check) return;
         if (context.getArgs().length >= 2) {
             Pattern pattern = Pattern.compile("<#(\\d+)>");
             Matcher matcher = pattern.matcher(context.getRawArgs()[1]);

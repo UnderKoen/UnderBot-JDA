@@ -20,11 +20,11 @@ public class Livestreamcheck extends Thread {
     public void run() {
         try {
             while (Check) {
-                if (Current != "") Last = Current;
                 Current = YoutubeUtil.getLivestream(channelId);
-                if (Last != Current) {
-                    channel.sendMessage("https://www.youtube.com/channel/" + channelId + "/live").complete();
+                if (!Current.contentEquals(Last)) {
+                    if (!Current.isEmpty()) channel.sendMessage("https://www.youtube.com/makertim/live").complete();
                 }
+                Last = Current;
                 this.sleep(5 * 60 * 1000);
             }
         } catch (Exception e) {
