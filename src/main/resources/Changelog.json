@@ -1,6 +1,6 @@
 {
-  "ADDED":[],
+  "ADDED":["Auto pause the player when there are no persons in the channel"],
   "REMOVED": [],
-  "FIXED":["gmt in /timeout", "dubbel livestream melding"],
+  "FIXED":["/music default null", "youtube in stead of youtebe"],
   "TODO": ["Customize message style", "Databases for timeouts and message style"]
 }

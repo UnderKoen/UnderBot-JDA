@@ -60,6 +60,12 @@ public class DefaultCommand implements Command {
 
         String url = context.getRawArgs()[0];
 
+        if (url.contentEquals("null")) {
+            MusicCommand.musicHandler.setDefaultTrack(context.getGuild(), musicManager, null);
+            new TextMessage().setMention(context.getUser()).addText("Cleared the default track").sendMessage(context.getChannel());
+            return;
+        }
+
         MusicCommand.musicHandler.playerManager.loadItemOrdered(musicManager, url, new AudioLoadResultHandler() {
             @Override
             public void trackLoaded(AudioTrack track) {

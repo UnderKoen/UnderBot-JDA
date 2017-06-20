@@ -1,5 +1,6 @@
 package nl.UnderKoen.UnderBot.music.commands;
 
+import nl.UnderKoen.UnderBot.Main;
 import nl.UnderKoen.UnderBot.commands.Command;
 import nl.UnderKoen.UnderBot.commands.MainCommand;
 import nl.UnderKoen.UnderBot.music.MusicHandler;
@@ -22,6 +23,7 @@ public class MusicCommand implements MainCommand {
 
     public MusicCommand() {
         musicHandler = new MusicHandler();
+        Main.jda.addEventListener(musicHandler);
     }
 
     @Override
