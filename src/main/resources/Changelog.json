@@ -1,6 +1,6 @@
 {
-  "ADDED":["Auto pause the player when there are no persons in the channel"],
+  "ADDED":[],
   "REMOVED": [],
-  "FIXED":["/music default null", "youtube in stead of youtebe"],
-  "TODO": ["Customize message style", "Databases for timeouts and message style"]
+  "FIXED":["Error with music that it does not want to play music."],
+  "TODO": ["twittercheck","Customize message style", "Databases for timeouts and message style"]
 }

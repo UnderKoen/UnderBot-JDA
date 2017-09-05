@@ -3,9 +3,11 @@ package nl.UnderKoen.UnderBot;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
+import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import nl.UnderKoen.UnderBot.commands.Command;
+import nl.UnderKoen.UnderBot.minesweeper.commands.MinesweeperCommand;
 import nl.UnderKoen.UnderBot.music.commands.MusicCommand;
 import nl.UnderKoen.UnderBot.utils.YoutubeUtil;
 
@@ -26,9 +28,10 @@ public class Main {
 
     public static String youtubeKey;
 
-    public static String version = "0.1.5";
+    public static String version = "0.2.2";
 
-    public static void main(String[] args) {handler = new CommandHandler("/");
+    public static void main(String[] args) {
+        handler = new CommandHandler("/");
         if (args.length < 2) {
             System.out.println("args  for running this are [Discord key] [Youtube key]");
             return;
@@ -46,11 +49,13 @@ public class Main {
             e.printStackTrace();
         }
         youtubeKey = args[1];
-        /*for (Role role: jda.getGuilds().get(0).getRoles()) {
-            System.out.println(role.getName() + " -=- " + role.getPosition());
-        }//*/
+        //for (Role role: jda.getGuilds().get(0).getRoles()) {
+        //    System.out.println(role.getName() + " -=- " + role.getPosition());
+        //}
         initializeAllCommands("nl.UnderKoen.UnderBot.commands", handler);
         handler.initializeCommand(new MusicCommand());
+        handler.initializeCommand(new MinesweeperCommand());
+        jda.getPresence().setGame(Game.of("/help - for help"));
     }
 
     public static void initializeAllCommands(String pckgname, CommandHandler handler) {
