@@ -55,7 +55,7 @@ public class LivestreamcheckCommand implements Command {
                     .sendMessage(context.getChannel());
             return;
         }
-        Livestreamcheck.Check = Boolean.parseBoolean(context.getArgs()[0]);
+        Livestreamcheck.check = Boolean.parseBoolean(context.getArgs()[0]);
         if (context.getArgs().length >= 2) {
             Pattern pattern = Pattern.compile("<#(\\d+)>");
             Matcher matcher = pattern.matcher(context.getRawArgs()[1]);
@@ -71,7 +71,7 @@ public class LivestreamcheckCommand implements Command {
             Livestreamcheck.channel = context.getChannel();
         }
         new Livestreamcheck().start();
-        if (Livestreamcheck.Check) {
+        if (Livestreamcheck.check) {
             new TextMessage().setMention(context.getUser())
                     .addText("Enabled livestream check for " + Livestreamcheck.channel.getAsMention() + ".")
                     .sendMessage(context.getChannel());

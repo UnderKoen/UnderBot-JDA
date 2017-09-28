@@ -7,14 +7,19 @@ import net.dv8tion.jda.core.entities.Game;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.exceptions.RateLimitedException;
 import nl.UnderKoen.UnderBot.commands.Command;
+import nl.UnderKoen.UnderBot.commands.moderator.TwittercheckCommand;
 import nl.UnderKoen.UnderBot.minesweeper.commands.MinesweeperCommand;
 import nl.UnderKoen.UnderBot.music.commands.MusicCommand;
-import nl.UnderKoen.UnderBot.utils.YoutubeUtil;
+import nl.UnderKoen.UnderBot.utils.KeyLoaderUtil;
+import org.apache.commons.io.FileUtils;
 
 import javax.security.auth.login.LoginException;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.InputStream;
 import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -26,19 +31,40 @@ public class Main {
     public static JDA jda;
     public static CommandHandler handler;
 
-    public static String youtubeKey;
+    public static KeyLoaderUtil keys;
 
-    public static String version = "0.2.2";
+    public static String version = "0.2.3";
 
-    public static void main(String[] args) {
-        handler = new CommandHandler("/");
-        if (args.length < 2) {
-            System.out.println("args  for running this are [Discord key] [Youtube key]");
-            return;
+    public static void main(String[] args) throws Exception{
+        if (args.length == 0) {
+            File file = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
+            file = new File(file.getParent() + "/Keys.json");
+            if (!file.exists()) {
+                file.createNewFile();
+                try {
+                    InputStream input = Main.class.getClassLoader().getResourceAsStream("Keys.json");
+                    FileUtils.copyInputStreamToFile(input, file);
+                    System.out.println("You need to hava a Keys.json file or a path to a Keys.json file as arg.");
+                    System.out.println("Created a Keys.json.");
+                    return;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return;
+                }
+            }
+            keys = new KeyLoaderUtil(FileUtils.readFileToString(file, Charset.defaultCharset()));
+        } else {
+            File file = new File(args[0]);
+            if (!file.exists()) {
+                System.out.print("You need to hava a Keys.json file or a path to a Keys.json file as arg.");
+                return;
+            }
+            keys = new KeyLoaderUtil(FileUtils.readFileToString(file, Charset.defaultCharset()));
         }
+        handler = new CommandHandler("/");
         try {
             jda = new JDABuilder(AccountType.BOT)
-                    .setToken(args[0])
+                    .setToken(keys.getDiscordKey())
                     .addEventListener(handler)
                     .buildBlocking();
         } catch (LoginException e) {
@@ -48,7 +74,6 @@ public class Main {
         } catch (RateLimitedException e) {
             e.printStackTrace();
         }
-        youtubeKey = args[1];
         //for (Role role: jda.getGuilds().get(0).getRoles()) {
         //    System.out.println(role.getName() + " -=- " + role.getPosition());
         //}

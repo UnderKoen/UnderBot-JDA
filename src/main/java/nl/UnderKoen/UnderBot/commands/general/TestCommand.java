@@ -16,6 +16,7 @@ import nl.UnderKoen.UnderBot.commands.Command;
 import nl.UnderKoen.UnderBot.entities.CommandContext;
 import nl.UnderKoen.UnderBot.music.GuildMusicManager;
 import nl.UnderKoen.UnderBot.music.TrackScheduler;
+import nl.UnderKoen.UnderBot.utils.Messages.TwitterMessage;
 import nl.UnderKoen.UnderBot.utils.YoutubeUtil;
 
 import java.util.HashMap;
@@ -50,7 +51,6 @@ public class TestCommand implements Command {
     }
 
     @Override
-    public void run(CommandContext context) {
-
+    public void run(CommandContext context) {;
     }
 }

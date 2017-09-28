@@ -9,7 +9,7 @@ import nl.UnderKoen.UnderBot.utils.YoutubeUtil;
  * Created by Under_Koen on 09-05-17.
  */
 public class Livestreamcheck extends Thread {
-    public static boolean Check = false;
+    public static boolean check = false;
     public static TextChannel channel;
 
     public static String channelId = "UC8cgXXpepeB2CWfxdy7uGVg";
@@ -20,7 +20,7 @@ public class Livestreamcheck extends Thread {
     @Override
     public void run() {
         try {
-            while (Check) {
+            while (check) {
                 Current = YoutubeUtil.getLivestream(channelId);
                 if (!Current.contentEquals(Last)) {
                     if (!Current.isEmpty()) channel.sendMessage("@everyone Tim is live op https://www.youtube.com/makertim/live").complete();

@@ -1,0 +1,10 @@
+{
+  "discord_key": "",
+  "youtube_key": "",
+  "twitter": {
+    "consumerKey": "",
+    "consumerSecret": "",
+    "token": "",
+    "tokenSecret": ""
+  }
+}

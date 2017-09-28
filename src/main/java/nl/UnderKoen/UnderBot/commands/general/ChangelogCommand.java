@@ -61,7 +61,7 @@ public class ChangelogCommand implements Command {
 
         //Get file from resources folder
         ClassLoader classLoader = getClass().getClassLoader();
-        InputStream file = classLoader.getResourceAsStream("Changelog.json");
+        InputStream file = classLoader.getResourceAsStream("/resources/Changelog.json");
 
         try (Scanner scanner = new Scanner(file, "UTF-8")) {
 

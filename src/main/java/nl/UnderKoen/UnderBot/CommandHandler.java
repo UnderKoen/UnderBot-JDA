@@ -51,6 +51,9 @@ public class CommandHandler extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
+
+        //System.out.print(event.getMessage().getEmbeds().get(0).getAuthor());
+
         String messageContent = event.getMessage().getContent();
         String messageRawContent = event.getMessage().getRawContent();
         if (TimeoutCommand.isTimeouted(event.getAuthor())) {

@@ -23,7 +23,7 @@ public class YoutubeUtil {
     }
 
     public static String getLivestream(String userId) {
-        String url = "https://www.googleapis.com/youtube/v3/search?part=id&channelId="+ userId + "&eventType=live&type=video&key=" + Main.youtubeKey;
+        String url = "https://www.googleapis.com/youtube/v3/search?part=id&channelId="+ userId + "&eventType=live&type=video&key=" + Main.keys.getYoutubeKey();
         String charset = "UTF-8";
         try {
             URL obj = new URL(url);
