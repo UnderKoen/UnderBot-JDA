@@ -1,8 +1,7 @@
-package nl.UnderKoen.UnderBot.utils.Messages;
+package nl.underkoen.underbot.utils.Messages;
 
+import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.MessageEmbed.Field;
-import net.dv8tion.jda.core.entities.User;
-import nl.UnderKoen.UnderBot.utils.Messages.UnderMessage;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -14,11 +13,11 @@ import java.util.List;
 public class ErrorMessage implements UnderMessage {
     private Color color = Color.RED;
 
-    private User user;
+    private Member user;
 
     private List<Field> fields;
 
-    public ErrorMessage(User user, String error) {
+    public ErrorMessage(Member user, String error) {
         this.user = user;
         fields = new ArrayList<Field>();
         fields.add(new Field("Error:", error, true));
@@ -30,7 +29,7 @@ public class ErrorMessage implements UnderMessage {
     }
 
     @Override
-    public User getAuthor() {
+    public Member getAuthor() {
         return user;
     }
 

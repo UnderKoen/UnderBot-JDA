@@ -1,4 +1,4 @@
-package nl.UnderKoen.UnderBot;
+package nl.underkoen.underbot;
 
 /**
  * Created by Under_Koen on 10-05-17.

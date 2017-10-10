@@ -33,13 +33,13 @@ jar {
     manifest {
         attributes(
                 'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
-                'Main-Class': 'nl.UnderKoen.UnderBot.Main'
+                'Main-Class': 'nl.underkoen.underbot.Main'
         )
     }
 }
 
 shadowJar {
-    baseName = 'UnderBot-' + version;
+    baseName = 'underbot-' + version;
     classifier = null
     version = null
 }

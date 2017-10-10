@@ -1,10 +1,8 @@
-package nl.UnderKoen.UnderBot.minesweeper.commands;
+package nl.underkoen.underbot.minesweeper.commands;
 
-import nl.UnderKoen.UnderBot.commands.Command;
-import nl.UnderKoen.UnderBot.entities.CommandContext;
-import nl.UnderKoen.UnderBot.minesweeper.Map;
-import nl.UnderKoen.UnderBot.minesweeper.Minesweeper;
-import nl.UnderKoen.UnderBot.utils.Messages.ErrorMessage;
+import nl.underkoen.underbot.commands.Command;
+import nl.underkoen.underbot.entities.CommandContext;
+import nl.underkoen.underbot.minesweeper.Minesweeper;
 
 /**
  * Created by Under_Koen on 21-07-17.
@@ -36,7 +34,7 @@ public class ShowCommand implements Command {
 
     @Override
     public void run(CommandContext context) throws Exception {
-        Minesweeper ms = Minesweeper.getGame(context.getUser());
+        Minesweeper ms = Minesweeper.getGame(context.getMember());
         ms.sendMap(context.getChannel());
     }
 }

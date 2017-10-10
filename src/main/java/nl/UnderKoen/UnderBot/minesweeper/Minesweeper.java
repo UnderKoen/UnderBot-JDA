@@ -1,9 +1,8 @@
-package nl.UnderKoen.UnderBot.minesweeper;
+package nl.underkoen.underbot.minesweeper;
 
-import net.dv8tion.jda.core.entities.Channel;
+import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.entities.User;
-import nl.UnderKoen.UnderBot.utils.Messages.TextMessage;
+import nl.underkoen.underbot.utils.Messages.TextMessage;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,17 +13,17 @@ import java.util.List;
 public class Minesweeper {
     public static List<Minesweeper> games = new ArrayList<>();
 
-    User owner;
+    Member owner;
     Map map;
 
-    public Minesweeper(User owner) {
+    public Minesweeper(Member owner) {
         this.owner = owner;
         map = new Map();
         games.remove(getGame(owner));
         games.add(this);
     }
 
-    public static Minesweeper getGame(User owner) {
+    public static Minesweeper getGame(Member owner) {
         for (Minesweeper game: games) {
             if (game.getOwner() == owner) return game;
         }
@@ -35,7 +34,7 @@ public class Minesweeper {
         return map;
     }
 
-    public User getOwner() {
+    public Member getOwner() {
 
         return owner;
     }

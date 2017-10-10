@@ -1,15 +1,15 @@
-package nl.UnderKoen.UnderBot.utils.Messages;
+package nl.underkoen.underbot.utils.Messages;
 
-import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.entities.User;
-import nl.UnderKoen.UnderBot.utils.ColorUtil;
+import nl.underkoen.underbot.utils.ColorUtil;
+import twitter4j.MediaEntity;
 import twitter4j.Status;
+import twitter4j.URLEntity;
 
 import java.awt.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Under_Koen on 06/09/2017.
@@ -27,9 +27,10 @@ public class TwitterMessage implements UnderMessage {
     @Override
     public void sendMessage(TextChannel channel) {
 
+        //System.out.println();
+
         EmbedBuilder msg = new EmbedBuilder();
 
-        Color color = getColor();
         if (color != null) {
             msg.setColor(color);
         }
@@ -38,7 +39,33 @@ public class TwitterMessage implements UnderMessage {
                         + "/status/" + status.getId(),
                 status.getUser().getOriginalProfileImageURL());
 
-        msg.setDescription(status.getText());
+        String text = status.getText();
+
+        for (URLEntity url : status.getURLEntities()) {
+            msg.setImage(url.getExpandedURL());
+            text = text.replace(url.getURL(), url.getExpandedURL());
+        }
+
+        if (status.isRetweet()) {
+            for (URLEntity url : status.getRetweetedStatus().getURLEntities()) {
+                msg.setImage(url.getExpandedURL());
+                text = text.replace(url.getURL(), url.getExpandedURL());
+            }
+        }
+
+        for (MediaEntity url : status.getMediaEntities()) {
+            msg.setImage(url.getMediaURLHttps());
+            text = text.replace(url.getURL(), url.getExpandedURL());
+        }
+
+        if (status.isRetweet()) {
+            for (MediaEntity url : status.getRetweetedStatus().getMediaEntities()) {
+                msg.setImage(url.getMediaURLHttps());
+                text = text.replace(url.getURL(), url.getExpandedURL());
+            }
+        }
+
+        msg.setDescription(text);
 
         msg.setFooter("Twitter", "https://images-ext-1.discordapp.net/external/bXJWV2Y_F3XSra_kEqIYXAAsI3m1meckfLhYuWzxIfI/https/abs.twimg.com/icons/apple-touch-icon-192x192.png");
 
@@ -51,7 +78,7 @@ public class TwitterMessage implements UnderMessage {
                         ms.delete().complete();
                     }
                 },
-                1000 * 60 * 5
+                TimeUnit.DAYS.toMillis(1)
         );
     }
 }

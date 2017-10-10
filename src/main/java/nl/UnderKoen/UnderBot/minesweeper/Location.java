@@ -1,4 +1,4 @@
-package nl.UnderKoen.UnderBot.minesweeper;
+package nl.underkoen.underbot.minesweeper;
 
 /**
  * Created by Under_Koen on 21-07-17.

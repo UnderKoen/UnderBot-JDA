@@ -1,16 +1,13 @@
-package nl.UnderKoen.UnderBot.utils.Messages;
+package nl.underkoen.underbot.utils.Messages;
 
 import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.Message;
-import net.dv8tion.jda.core.entities.MessageEmbed;
+import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.entities.MessageEmbed.*;
-import net.dv8tion.jda.core.entities.TextChannel;
-import net.dv8tion.jda.core.entities.User;
-import net.dv8tion.jda.core.entities.impl.MessageEmbedImpl;
 
 import java.awt.*;
 import java.util.*;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Under_Koen on 19-04-17.
@@ -21,7 +18,7 @@ public interface UnderMessage {
         return null;
     }
 
-    default User getAuthor() {
+    default Member getAuthor() {
         return null;
     }
 
@@ -50,9 +47,9 @@ public interface UnderMessage {
             msg.setColor(color);
         }
 
-        User author = getAuthor();
+        Member author = getAuthor();
         if (author != null) {
-            msg.setFooter(author.getName(), author.getAvatarUrl());
+            msg.setFooter(author.getEffectiveName(), author.getUser().getAvatarUrl());
         }
 
         List<Field> fields = getFields();
@@ -82,7 +79,7 @@ public interface UnderMessage {
                         ms.delete().complete();
                     }
                 },
-                1000 * 60 * 5
+                TimeUnit.MINUTES.toMillis(5)
         );
     }
 }

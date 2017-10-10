@@ -1,7 +1,7 @@
-package nl.UnderKoen.UnderBot.commands;
+package nl.underkoen.underbot.commands;
 
-import nl.UnderKoen.UnderBot.Roles;
-import nl.UnderKoen.UnderBot.entities.CommandContext;
+import nl.underkoen.underbot.Roles;
+import nl.underkoen.underbot.entities.CommandContext;
 
 /**
  * Created by Under_Koen on 19-04-17.

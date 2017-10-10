@@ -1,4 +1,4 @@
-package nl.UnderKoen.UnderBot.minesweeper;
+package nl.underkoen.underbot.minesweeper;
 
 import java.util.ArrayList;
 import java.util.HashMap;

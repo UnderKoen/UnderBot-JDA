@@ -1,8 +1,7 @@
-package nl.UnderKoen.UnderBot.threads;
+package nl.underkoen.underbot.threads;
 
 import net.dv8tion.jda.core.entities.TextChannel;
-import nl.UnderKoen.UnderBot.utils.Messages.TextMessage;
-import nl.UnderKoen.UnderBot.utils.Messages.TwitterMessage;
+import nl.underkoen.underbot.utils.Messages.TwitterMessage;
 import twitter4j.*;
 import twitter4j.auth.AccessToken;
 import twitter4j.conf.ConfigurationBuilder;
@@ -31,7 +30,7 @@ public class Twittercheck {
         twitterStream = twitterStreamFactory.getInstance(new AccessToken(token, tokenSecret));
         twitterStream.onStatus(status -> {
             if (status.getUser().getScreenName().equalsIgnoreCase(user)) {
-                if (status.getInReplyToScreenName() != null) return;
+                if (status.getInReplyToScreenName() != null && !status.getInReplyToScreenName().equalsIgnoreCase(user)) return;
                 new TwitterMessage().setStatus(status).sendMessage(channel);
             }
         });

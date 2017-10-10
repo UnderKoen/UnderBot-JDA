@@ -1,18 +1,17 @@
-package nl.UnderKoen.UnderBot.commands.supporter;
+package nl.underkoen.underbot.commands.supporter;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import nl.UnderKoen.UnderBot.Main;
-import nl.UnderKoen.UnderBot.Roles;
-import nl.UnderKoen.UnderBot.commands.Command;
-import nl.UnderKoen.UnderBot.entities.CommandContext;
-import nl.UnderKoen.UnderBot.utils.Messages.ErrorMessage;
-import nl.UnderKoen.UnderBot.utils.Messages.TextMessage;
+import nl.underkoen.underbot.Main;
+import nl.underkoen.underbot.Roles;
+import nl.underkoen.underbot.commands.Command;
+import nl.underkoen.underbot.entities.CommandContext;
+import nl.underkoen.underbot.utils.Messages.ErrorMessage;
+import nl.underkoen.underbot.utils.Messages.TextMessage;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -113,7 +112,7 @@ public class EmoteCommand implements Command {
     @Override
     public void run(CommandContext context) throws Exception {
         if (context.getArgs().length == 0) {
-            new ErrorMessage(context.getUser(), "No text to change to emote text")
+            new ErrorMessage(context.getMember(), "No text to change to emote text")
                     .sendMessage(context.getChannel());
             return;
         }
@@ -132,6 +131,6 @@ public class EmoteCommand implements Command {
                 text = text + o.get("none").getAsString() + " ";
             }
         }
-        new TextMessage().addText(text).setMention(context.getUser()).sendMessage(context.getChannel());
+        new TextMessage().addText(text).setMention(context.getMember()).sendMessage(context.getChannel());
     }
 }

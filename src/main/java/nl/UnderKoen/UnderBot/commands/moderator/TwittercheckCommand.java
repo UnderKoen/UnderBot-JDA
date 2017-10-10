@@ -1,13 +1,12 @@
-package nl.UnderKoen.UnderBot.commands.moderator;
+package nl.underkoen.underbot.commands.moderator;
 
-import nl.UnderKoen.UnderBot.Main;
-import nl.UnderKoen.UnderBot.Roles;
-import nl.UnderKoen.UnderBot.commands.Command;
-import nl.UnderKoen.UnderBot.entities.CommandContext;
-import nl.UnderKoen.UnderBot.threads.Livestreamcheck;
-import nl.UnderKoen.UnderBot.threads.Twittercheck;
-import nl.UnderKoen.UnderBot.utils.Messages.ErrorMessage;
-import nl.UnderKoen.UnderBot.utils.Messages.TextMessage;
+import nl.underkoen.underbot.Main;
+import nl.underkoen.underbot.Roles;
+import nl.underkoen.underbot.commands.Command;
+import nl.underkoen.underbot.entities.CommandContext;
+import nl.underkoen.underbot.threads.Twittercheck;
+import nl.underkoen.underbot.utils.Messages.ErrorMessage;
+import nl.underkoen.underbot.utils.Messages.TextMessage;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -18,10 +17,7 @@ import java.util.regex.Pattern;
 public class TwittercheckCommand implements Command {
     private String command = "twittercheck";
     private String usage = "/twittercheck [twitter_name] (textChannel)]";
-    private String description = "not yet implemented" +
-            "\nEnable/disable twittercheck for [twitter_name]." +
-            "\nIf textChannel is empty it outputs in your current channel." +
-            "\nExample /twittercheck makertim #meldingen";
+    private String description = "\nEnable/disable twittercheck for [twitter_name] in (textchanne;).";
     private int minimumRole = Roles.MOD.role;
 
     private String consumerKey, consumerSecret, token, tokenSecret;
@@ -57,21 +53,21 @@ public class TwittercheckCommand implements Command {
     @Override
     public void run(CommandContext context) throws Exception {
         if (context.getRawArgs().length < 1 && !Twittercheck.check) {
-            new ErrorMessage(context.getUser(), "This command needs arguments to work.")
+            new ErrorMessage(context.getMember(), "This command needs arguments to work.")
                     .sendMessage(context.getChannel());
             return;
         }
         if (!Twittercheck.check) {
             Twittercheck.user = context.getArgs()[0];
 
-            if (context.getArgs().length >= 3) {
+            if (context.getArgs().length >= 2) {
                 Pattern pattern = Pattern.compile("<#(\\d+)>");
                 Matcher matcher = pattern.matcher(context.getRawArgs()[1]);
                 matcher.find();
                 try {
                     Twittercheck.channel = context.getGuild().getTextChannelById(matcher.group(1));
                 } catch (Exception e) {
-                    new ErrorMessage(context.getUser(), context.getRawArgs()[1] + " is not a valid channel.")
+                    new ErrorMessage(context.getMember(), context.getRawArgs()[1] + " is not a valid channel.")
                             .sendMessage(context.getChannel());
                     return;
                 }
@@ -82,11 +78,11 @@ public class TwittercheckCommand implements Command {
         Twittercheck.check = !Twittercheck.check;
         Twittercheck.start(consumerKey, consumerSecret, token, tokenSecret);
         if (Twittercheck.check) {
-            new TextMessage().setMention(context.getUser())
+            new TextMessage().setMention(context.getMember())
                     .addText("Enabled twitter check for " + Twittercheck.channel.getAsMention() + ".")
                     .sendMessage(context.getChannel());
         } else {
-            new TextMessage().setMention(context.getUser())
+            new TextMessage().setMention(context.getMember())
                     .addText("Disabled twitter check for " + Twittercheck.channel.getAsMention() + ".")
                     .sendMessage(context.getChannel());
         }

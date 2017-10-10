@@ -1,9 +1,9 @@
-package nl.UnderKoen.UnderBot.commands.general;
+package nl.underkoen.underbot.commands.general;
 
-import nl.UnderKoen.UnderBot.Main;
-import nl.UnderKoen.UnderBot.commands.Command;
-import nl.UnderKoen.UnderBot.entities.CommandContext;
-import nl.UnderKoen.UnderBot.utils.Messages.TextMessage;
+import nl.underkoen.underbot.Main;
+import nl.underkoen.underbot.commands.Command;
+import nl.underkoen.underbot.entities.CommandContext;
+import nl.underkoen.underbot.utils.Messages.TextMessage;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import java.util.ArrayList;
 public class VersionCommand implements Command {
     private String command = "versions";
     private String usage = "/versions";
-    private String description = "Returns all the available versions for /changelog [version].";
+    private String description = "Returns all the versions of the bot.";
     private ArrayList<String> versions = new ArrayList<String>();
 
     @Override
@@ -50,7 +50,7 @@ public class VersionCommand implements Command {
         for (String version : versions) {
             str.append("- ").append(version).append("\n");
         }
-        new TextMessage().setMention(context.getUser()).addText("All version for /changelog [version]")
+        new TextMessage().setMention(context.getMember()).addText("All version for /changelog [version]")
                 .addField("Versions", str.toString(), false).sendMessage(context.getChannel());
     }
 }

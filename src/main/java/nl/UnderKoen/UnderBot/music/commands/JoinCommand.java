@@ -1,12 +1,12 @@
-package nl.UnderKoen.UnderBot.music.commands;
+package nl.underkoen.underbot.music.commands;
 
 import net.dv8tion.jda.core.entities.Member;
-import nl.UnderKoen.UnderBot.Roles;
-import nl.UnderKoen.UnderBot.commands.Command;
-import nl.UnderKoen.UnderBot.entities.CommandContext;
-import nl.UnderKoen.UnderBot.music.MusicHandler;
-import nl.UnderKoen.UnderBot.utils.Messages.ErrorMessage;
-import nl.UnderKoen.UnderBot.utils.Messages.TextMessage;
+import nl.underkoen.underbot.Roles;
+import nl.underkoen.underbot.commands.Command;
+import nl.underkoen.underbot.entities.CommandContext;
+import nl.underkoen.underbot.music.MusicHandler;
+import nl.underkoen.underbot.utils.Messages.ErrorMessage;
+import nl.underkoen.underbot.utils.Messages.TextMessage;
 
 /**
  * Created by Under_Koen on 10-05-17.
@@ -15,6 +15,12 @@ public class JoinCommand implements Command {
     private String command = "join";
     private String usage = "join";
     private String description = "Let the bot join your channel";
+    private String[] aliases = {"j"};
+
+    @Override
+    public String[] getAliases() {
+        return aliases;
+    }
 
     @Override
     public String getCommand() {
@@ -44,12 +50,12 @@ public class JoinCommand implements Command {
     public void run(CommandContext context) {
         Member member = context.getMember();
         if (!member.getVoiceState().inVoiceChannel()) {
-            new ErrorMessage(member.getUser(), "You need to be in a voice channel").sendMessage(context.getChannel());
+            new ErrorMessage(member, "You need to be in a voice channel").sendMessage(context.getChannel());
             return;
         }
         MusicHandler.channel = context.getChannel();
         new TextMessage().addText("Just joined: " + context.getMember()
-                .getVoiceState().getChannel().getName()).setMention(context.getUser()).sendMessage(context.getChannel());
+                .getVoiceState().getChannel().getName()).setMention(context.getMember()).sendMessage(context.getChannel());
         MusicCommand.musicHandler.joinChannel(context.getMember().getVoiceState().getChannel());
     }
 }

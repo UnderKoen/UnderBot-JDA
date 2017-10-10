@@ -1,16 +1,15 @@
-package nl.UnderKoen.UnderBot.commands.moderator;
+package nl.underkoen.underbot.commands.moderator;
 
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.User;
-import nl.UnderKoen.UnderBot.Roles;
-import nl.UnderKoen.UnderBot.commands.Command;
-import nl.UnderKoen.UnderBot.entities.CommandContext;
-import nl.UnderKoen.UnderBot.utils.Messages.ErrorMessage;
-import nl.UnderKoen.UnderBot.utils.Messages.TextMessage;
+import nl.underkoen.underbot.Roles;
+import nl.underkoen.underbot.commands.Command;
+import nl.underkoen.underbot.entities.CommandContext;
+import nl.underkoen.underbot.utils.Messages.ErrorMessage;
+import nl.underkoen.underbot.utils.Messages.TextMessage;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
 import java.util.HashMap;
@@ -23,7 +22,7 @@ import java.util.regex.Pattern;
 public class TimeoutCommand implements Command {
     private String command = "timeout";
     private String usage = "/timeout [User] [Lenght] (reason...)";
-    private String description = "Time out a user so he can't talk. \nLenght like 1d2u10m3s";
+    private String description = "Time out a user so he can't talk.";
     private int minimumRole = Roles.MOD.role;
 
     @Override
@@ -54,12 +53,12 @@ public class TimeoutCommand implements Command {
     @Override
     public void run(CommandContext context) {
         if (context.getRawArgs().length == 0 || context.getRawArgs().length < 2) {
-            new ErrorMessage(context.getUser(), ("This command needs " +  ((context.getRawArgs().length == 0)? "" : "more") +" arguments to work"))
+            new ErrorMessage(context.getMember(), ("This command needs " +  ((context.getRawArgs().length == 0)? "" : "more") +" arguments to work"))
                     .sendMessage(context.getChannel());
             return;
         }
         TextMessage message = new TextMessage();
-        message.setMention(context.getUser());
+        message.setMention(context.getMember());
         Pattern pattern = Pattern.compile("<@!?(\\d+)>");
         Matcher matcher = pattern.matcher(context.getRawArgs()[0]);
         matcher.find();
@@ -67,7 +66,7 @@ public class TimeoutCommand implements Command {
         try {
             member = context.getGuild().getMemberById(matcher.group(1));
         } catch (Exception e) {
-            new ErrorMessage(context.getUser(), context.getRawArgs()[0] + " is not a valid user.")
+            new ErrorMessage(context.getMember(), context.getRawArgs()[0] + " is not a valid user.")
                     .sendMessage(context.getChannel());
             return;
         }
@@ -102,13 +101,13 @@ public class TimeoutCommand implements Command {
             lenght = lenght.plus(Integer.parseInt(matcher.group(1)), unit);
         }
         if (!matcher.replaceAll("").isEmpty()) {
-            new ErrorMessage(context.getUser(), context.getRawArgs()[1] + " is not a valid lenght.")
+            new ErrorMessage(context.getMember(), context.getRawArgs()[1] + " is not a valid lenght.")
                     .sendMessage(context.getChannel());
             return;
         }
         timeouts.put(member.getUser(), Timestamp.valueOf(lenght));
         TextMessage msg = new TextMessage().addText("Timeout information")
-                .setMention(context.getUser())
+                .setMention(context.getMember())
                 .addField("User", member.getAsMention(), false)
                 .addField("Until", Timestamp.valueOf(lenght).toLocaleString(), false);
         if (context.getRawArgs().length >= 3) {

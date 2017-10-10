@@ -1,12 +1,12 @@
-package nl.UnderKoen.UnderBot.music.commands;
+package nl.underkoen.underbot.music.commands;
 
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
-import nl.UnderKoen.UnderBot.Roles;
-import nl.UnderKoen.UnderBot.commands.Command;
-import nl.UnderKoen.UnderBot.entities.CommandContext;
-import nl.UnderKoen.UnderBot.music.MusicHandler;
-import nl.UnderKoen.UnderBot.utils.Messages.ErrorMessage;
-import nl.UnderKoen.UnderBot.utils.Messages.TextMessage;
+import nl.underkoen.underbot.Roles;
+import nl.underkoen.underbot.commands.Command;
+import nl.underkoen.underbot.entities.CommandContext;
+import nl.underkoen.underbot.music.MusicHandler;
+import nl.underkoen.underbot.utils.Messages.ErrorMessage;
+import nl.underkoen.underbot.utils.Messages.TextMessage;
 
 /**
  * Created by Under_Koen on 10-05-17.
@@ -43,19 +43,19 @@ public class ForceNextCommand implements Command {
     @Override
     public void run(CommandContext context) {
         if (context.getMember().getVoiceState().getChannel() != context.getGuild().getSelfMember().getVoiceState().getChannel()) {
-            new ErrorMessage(context.getUser(), "You need to be in " + context.getGuild().getSelfMember().getVoiceState().getChannel().getName()).sendMessage(context.getChannel());
+            new ErrorMessage(context.getMember(), "You need to be in " + context.getGuild().getSelfMember().getVoiceState().getChannel().getName()).sendMessage(context.getChannel());
             return;
         }
         if (!MusicHandler.isPlayingMusic(context.getGuild())) {
-            new ErrorMessage(context.getUser(), "Bot isn't playing music").sendMessage(context.getChannel());
+            new ErrorMessage(context.getMember(), "Bot isn't playing music").sendMessage(context.getChannel());
             return;
         }
         if (MusicHandler.isPlayingDefaultMusic(context.getGuild())) {
-            new ErrorMessage(context.getUser(), "Can't skip default song").sendMessage(context.getChannel());
+            new ErrorMessage(context.getMember(), "Can't skip default song").sendMessage(context.getChannel());
             return;
         }
         AudioTrack track = MusicHandler.getCurrentTrack(context.getGuild());
-        new TextMessage().setMention(context.getUser()).addText("Skipped [" + track.getInfo().title + "](" + track.getInfo().uri + ")").sendMessage(context.getChannel());
+        new TextMessage().setMention(context.getMember()).addText("Skipped [" + track.getInfo().title + "](" + track.getInfo().uri + ")").sendMessage(context.getChannel());
         MusicCommand.musicHandler.skipTrack(context.getGuild());
     }
 }

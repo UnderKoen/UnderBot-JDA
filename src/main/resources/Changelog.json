@@ -1,6 +1,6 @@
 {
-  "ADDED":["/twittercheck", "smarter way to save keys"],
+  "ADDED":["Support for aliases for subcommands", "/music volume returns with no arg the volume"],
   "REMOVED": [],
-  "FIXED":[""],
-  "TODO": ["Customize message style", "Databases for timeouts and message style"]
+  "FIXED":["When not having a nick name the footer of a response does not exist"],
+  "TODO": ["auto delete msg when stream is over", "Customize message style", "Databases for timeouts and message style"]
 }

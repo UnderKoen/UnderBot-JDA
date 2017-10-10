@@ -1,9 +1,9 @@
-package nl.UnderKoen.UnderBot.music.commands;
+package nl.underkoen.underbot.music.commands;
 
-import nl.UnderKoen.UnderBot.Main;
-import nl.UnderKoen.UnderBot.commands.Command;
-import nl.UnderKoen.UnderBot.commands.MainCommand;
-import nl.UnderKoen.UnderBot.music.MusicHandler;
+import nl.underkoen.underbot.Main;
+import nl.underkoen.underbot.commands.Command;
+import nl.underkoen.underbot.commands.MainCommand;
+import nl.underkoen.underbot.music.MusicHandler;
 
 import java.util.Arrays;
 import java.util.List;

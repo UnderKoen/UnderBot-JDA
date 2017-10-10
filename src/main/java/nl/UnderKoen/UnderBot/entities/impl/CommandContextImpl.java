@@ -1,7 +1,7 @@
-package nl.UnderKoen.UnderBot.entities.impl;
+package nl.underkoen.underbot.entities.impl;
 
 import net.dv8tion.jda.core.entities.*;
-import nl.UnderKoen.UnderBot.entities.CommandContext;
+import nl.underkoen.underbot.entities.CommandContext;
 
 /**
  * Created by Under_Koen on 19-04-17.

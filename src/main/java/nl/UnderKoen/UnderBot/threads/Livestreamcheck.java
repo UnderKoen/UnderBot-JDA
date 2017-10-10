@@ -1,9 +1,7 @@
-package nl.UnderKoen.UnderBot.threads;
+package nl.underkoen.underbot.threads;
 
-import net.dv8tion.jda.core.EmbedBuilder;
-import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.TextChannel;
-import nl.UnderKoen.UnderBot.utils.YoutubeUtil;
+import nl.underkoen.underbot.utils.YoutubeUtil;
 
 /**
  * Created by Under_Koen on 09-05-17.

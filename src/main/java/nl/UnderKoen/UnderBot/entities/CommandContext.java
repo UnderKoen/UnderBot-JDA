@@ -1,4 +1,4 @@
-package nl.UnderKoen.UnderBot.entities;
+package nl.underkoen.underbot.entities;
 import net.dv8tion.jda.core.entities.*;
 
 /**

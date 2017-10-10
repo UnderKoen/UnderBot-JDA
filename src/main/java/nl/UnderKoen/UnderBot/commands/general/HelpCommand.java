@@ -1,9 +1,9 @@
-package nl.UnderKoen.UnderBot.commands.general;
+package nl.underkoen.underbot.commands.general;
 
-import nl.UnderKoen.UnderBot.Main;
-import nl.UnderKoen.UnderBot.commands.Command;
-import nl.UnderKoen.UnderBot.entities.CommandContext;
-import nl.UnderKoen.UnderBot.utils.Messages.HelpMessage;
+import nl.underkoen.underbot.Main;
+import nl.underkoen.underbot.commands.Command;
+import nl.underkoen.underbot.entities.CommandContext;
+import nl.underkoen.underbot.utils.Messages.HelpMessage;
 
 /**
  * Created by Under_Koen on 21-04-17.
@@ -36,8 +36,8 @@ public class HelpCommand implements Command {
     @Override
     public void run(CommandContext context) {
         new HelpMessage()
-                .setMention(context.getUser())
-                .addText("All available commands are:")
+                .setMention(context.getMember())
+                //.showSubcommands(true)
                 .addCommands(Main.handler.getAllCommands())
                 .sendMessage(context.getChannel());
     }

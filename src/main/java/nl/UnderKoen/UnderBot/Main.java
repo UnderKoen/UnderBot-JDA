@@ -1,22 +1,17 @@
-package nl.UnderKoen.UnderBot;
+package nl.underkoen.underbot;
 
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Game;
-import net.dv8tion.jda.core.entities.Role;
-import net.dv8tion.jda.core.exceptions.RateLimitedException;
-import nl.UnderKoen.UnderBot.commands.Command;
-import nl.UnderKoen.UnderBot.commands.moderator.TwittercheckCommand;
-import nl.UnderKoen.UnderBot.minesweeper.commands.MinesweeperCommand;
-import nl.UnderKoen.UnderBot.music.commands.MusicCommand;
-import nl.UnderKoen.UnderBot.utils.KeyLoaderUtil;
+import nl.underkoen.underbot.commands.Command;
+import nl.underkoen.underbot.minesweeper.commands.MinesweeperCommand;
+import nl.underkoen.underbot.music.commands.MusicCommand;
+import nl.underkoen.underbot.utils.KeyLoaderUtil;
 import org.apache.commons.io.FileUtils;
 
-import javax.security.auth.login.LoginException;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.Charset;
@@ -33,9 +28,9 @@ public class Main {
 
     public static KeyLoaderUtil keys;
 
-    public static String version = "0.2.3";
+    public static String version = "0.2.6";
 
-    public static void main(String[] args) throws Exception{
+    public static void main(String[] args) throws Exception {
         if (args.length == 0) {
             File file = new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
             file = new File(file.getParent() + "/Keys.json");
@@ -61,26 +56,24 @@ public class Main {
             }
             keys = new KeyLoaderUtil(FileUtils.readFileToString(file, Charset.defaultCharset()));
         }
+
         handler = new CommandHandler("/");
         try {
             jda = new JDABuilder(AccountType.BOT)
                     .setToken(keys.getDiscordKey())
                     .addEventListener(handler)
                     .buildBlocking();
-        } catch (LoginException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (RateLimitedException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        //for (Role role: jda.getGuilds().get(0).getRoles()) {
+
+        //for (Role role : jda.getGuilds().get(0).getRoles()) {
         //    System.out.println(role.getName() + " -=- " + role.getPosition());
         //}
-        initializeAllCommands("nl.UnderKoen.UnderBot.commands", handler);
+        initializeAllCommands("nl.underkoen.underbot.commands", handler);
         handler.initializeCommand(new MusicCommand());
         handler.initializeCommand(new MinesweeperCommand());
-        jda.getPresence().setGame(Game.of("/help - for help"));
+        jda.getPresence().setGame(Game.of("/help -> for help"));
     }
 
     public static void initializeAllCommands(String pckgname, CommandHandler handler) {

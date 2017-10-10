@@ -1,4 +1,4 @@
-package nl.UnderKoen.UnderBot.music;
+package nl.underkoen.underbot.music;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;

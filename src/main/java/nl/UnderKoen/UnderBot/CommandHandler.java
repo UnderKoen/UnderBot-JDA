@@ -1,14 +1,14 @@
-package nl.UnderKoen.UnderBot;
+package nl.underkoen.underbot;
 
 import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
-import nl.UnderKoen.UnderBot.commands.Command;
-import nl.UnderKoen.UnderBot.commands.moderator.TimeoutCommand;
-import nl.UnderKoen.UnderBot.entities.impl.CommandContextImpl;
-import nl.UnderKoen.UnderBot.exceptions.AlreadyInitializedException;
-import nl.UnderKoen.UnderBot.utils.Messages.ErrorMessage;
-import nl.UnderKoen.UnderBot.utils.RoleUtil;
+import nl.underkoen.underbot.commands.Command;
+import nl.underkoen.underbot.commands.moderator.TimeoutCommand;
+import nl.underkoen.underbot.entities.impl.CommandContextImpl;
+import nl.underkoen.underbot.exceptions.AlreadyInitializedException;
+import nl.underkoen.underbot.utils.Messages.ErrorMessage;
+import nl.underkoen.underbot.utils.RoleUtil;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,6 +18,7 @@ import java.util.HashMap;
  */
 public class CommandHandler extends ListenerAdapter {
     private HashMap<String, Command> commands;
+    private HashMap<String, String> aliases;
     private String prefix;
 
     public void initializeCommand(Command command) {
@@ -27,17 +28,18 @@ public class CommandHandler extends ListenerAdapter {
             e.printStackTrace();
         }
         String commandName = command.getCommand();
-        String[] aliases = command.getAliases();
-        if (commands.containsKey(commandName)) throw new AlreadyInitializedException();
+        if (commands.containsKey(commandName) || aliases.containsKey(commandName)) throw new AlreadyInitializedException();
         commands.put(commandName, command);
+        String[] aliases = command.getAliases();
         for (String alias: aliases) {
-            if (commands.containsKey(alias)) continue;
-            commands.put(alias, command);
+            if (this.aliases.containsKey(alias) || commands.containsKey(alias)) continue;
+            this.aliases.put(alias, commandName);
         }
     }
 
     public CommandHandler(String prefix) {
         commands = new HashMap<String, Command>();
+        aliases = new HashMap<String, String>();
         this.prefix = prefix;
     }
 
@@ -51,9 +53,6 @@ public class CommandHandler extends ListenerAdapter {
 
     @Override
     public void onMessageReceived(MessageReceivedEvent event) {
-
-        //System.out.print(event.getMessage().getEmbeds().get(0).getAuthor());
-
         String messageContent = event.getMessage().getContent();
         String messageRawContent = event.getMessage().getRawContent();
         if (TimeoutCommand.isTimeouted(event.getAuthor())) {
@@ -70,12 +69,14 @@ public class CommandHandler extends ListenerAdapter {
         String commandName = messageContent.split(" ")[0].trim().replaceFirst(prefix, "").toLowerCase();
         context.setCommand(commandName);
 
-        if (!commands.containsKey(commandName)) return;
+        if (!commands.containsKey(commandName) && !aliases.containsKey(commandName)) return;
+
+        if (!commands.containsKey(commandName) && aliases.containsKey(commandName)) commandName = aliases.get(commandName);
 
         Command command = commands.get(commandName);
 
         if (RoleUtil.getHighestRole(event.getMember()).getPosition() < command.getMinimumRole()) {
-            new ErrorMessage(event.getAuthor(), "The minimum role for /" + commandName + " is " +
+            new ErrorMessage(event.getMember(), "The minimum role for /" + commandName + " is " +
                     RoleUtil.getRole(event.getGuild(), command.getMinimumRole()).getName()).sendMessage(event.getTextChannel());
             event.getMessage().delete().complete();
             return;
@@ -115,7 +116,7 @@ public class CommandHandler extends ListenerAdapter {
         try {
             command.run(context);
         } catch (Exception ex) {
-            new ErrorMessage(context.getUser(), "A error occured").sendMessage(context.getChannel());
+            new ErrorMessage(context.getMember(), "A error occured").sendMessage(context.getChannel());
             ex.printStackTrace();
         }
 

@@ -1,8 +1,8 @@
-package nl.UnderKoen.UnderBot.minesweeper;
+package nl.underkoen.underbot.minesweeper;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import nl.UnderKoen.UnderBot.Main;
+import nl.underkoen.underbot.Main;
 
 import java.io.File;
 import java.io.FileWriter;

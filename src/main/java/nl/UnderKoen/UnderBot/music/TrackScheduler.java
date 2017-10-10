@@ -1,12 +1,13 @@
-package nl.UnderKoen.UnderBot.music;
+package nl.underkoen.underbot.music;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayer;
 import com.sedmelluq.discord.lavaplayer.player.event.AudioEventAdapter;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason;
-import nl.UnderKoen.UnderBot.entities.CommandContext;
-import nl.UnderKoen.UnderBot.music.commands.NextCommand;
-import nl.UnderKoen.UnderBot.utils.Messages.TextMessage;;
+import nl.underkoen.underbot.entities.CommandContext;
+import nl.underkoen.underbot.music.commands.NextCommand;
+import nl.underkoen.underbot.utils.Messages.TextMessage;
+;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -33,9 +34,9 @@ public class TrackScheduler extends AudioEventAdapter {
         }
         if (!player.startTrack(track, true)) {
             queue.offer(track);
-            new TextMessage().setMention(context.getUser()).addText("Queued [" + track.getInfo().title + "](" + track.getInfo().uri + ") as " + queue.size() + "th").sendMessage(context.getChannel());
+            new TextMessage().setMention(context.getMember()).addText("Queued [" + track.getInfo().title + "](" + track.getInfo().uri + ") as " + queue.size() + "th").sendMessage(context.getChannel());
         } else {
-            new TextMessage().setMention(context.getUser()).addText("Started playing [" + track.getInfo().title + "](" + track.getInfo().uri + ")").sendMessage(context.getChannel());
+            new TextMessage().setMention(context.getMember()).addText("Started playing [" + track.getInfo().title + "](" + track.getInfo().uri + ")").sendMessage(context.getChannel());
         }
     }
 

@@ -1,16 +1,14 @@
-package nl.UnderKoen.UnderBot.utils;
+package nl.underkoen.underbot.utils;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import nl.UnderKoen.UnderBot.Main;
+import nl.underkoen.underbot.Main;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLConnection;
 
 import static org.apache.http.HttpHeaders.USER_AGENT;
 

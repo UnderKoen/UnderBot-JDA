@@ -1,12 +1,11 @@
-package nl.UnderKoen.UnderBot.music.commands;
+package nl.underkoen.underbot.music.commands;
 
-import net.dv8tion.jda.core.entities.Member;
-import nl.UnderKoen.UnderBot.Roles;
-import nl.UnderKoen.UnderBot.commands.Command;
-import nl.UnderKoen.UnderBot.entities.CommandContext;
-import nl.UnderKoen.UnderBot.music.MusicHandler;
-import nl.UnderKoen.UnderBot.utils.Messages.ErrorMessage;
-import nl.UnderKoen.UnderBot.utils.Messages.TextMessage;
+import nl.underkoen.underbot.Roles;
+import nl.underkoen.underbot.commands.Command;
+import nl.underkoen.underbot.entities.CommandContext;
+import nl.underkoen.underbot.music.MusicHandler;
+import nl.underkoen.underbot.utils.Messages.ErrorMessage;
+import nl.underkoen.underbot.utils.Messages.TextMessage;
 
 /**
  * Created by Under_Koen on 10-05-17.
@@ -15,7 +14,12 @@ public class VolumeCommand implements Command {
     private String command = "volume";
     private String usage = "volume";
     private String description = "Set the bot volume.";
+    private String[] aliases = {"v"};
 
+    @Override
+    public String[] getAliases() {
+        return aliases;
+    }
     @Override
     public String getCommand() {
         return command;
@@ -42,14 +46,18 @@ public class VolumeCommand implements Command {
 
     @Override
     public void run(CommandContext context) {
+        if (context.getArgs().length == 0) {
+            new TextMessage().addText("The volume is " + MusicHandler.getVolume(context.getGuild()) + "%").setMention(context.getMember()).sendMessage(context.getChannel());
+            return;
+        }
         int volume = 0;
         try {
             volume = Integer.parseInt(context.getArgs()[0]);
         } catch (Exception e) {
-            new ErrorMessage(context.getUser(), context.getArgs()[0] + " is no valid integer").sendMessage(context.getChannel());
+            new ErrorMessage(context.getMember(), context.getArgs()[0] + " is no valid integer").sendMessage(context.getChannel());
             return;
         }
-        new TextMessage().addText("Set volume to " + volume + "%").setMention(context.getUser()).sendMessage(context.getChannel());
+        new TextMessage().addText("Set volume to " + volume + "%").setMention(context.getMember()).sendMessage(context.getChannel());
         MusicHandler.setVolume(context.getGuild(), volume);
     }
 }

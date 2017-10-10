@@ -1,16 +1,15 @@
-package nl.UnderKoen.UnderBot.commands.supporter;
+package nl.underkoen.underbot.commands.supporter;
 
 import net.dv8tion.jda.core.entities.User;
-import nl.UnderKoen.UnderBot.Main;
-import nl.UnderKoen.UnderBot.Roles;
-import nl.UnderKoen.UnderBot.commands.Command;
-import nl.UnderKoen.UnderBot.entities.CommandContext;
-import nl.UnderKoen.UnderBot.utils.Messages.TextMessage;
+import nl.underkoen.underbot.Main;
+import nl.underkoen.underbot.Roles;
+import nl.underkoen.underbot.commands.Command;
+import nl.underkoen.underbot.entities.CommandContext;
+import nl.underkoen.underbot.utils.Messages.TextMessage;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.InputStream;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -115,7 +114,7 @@ public class AandachtCommand implements Command {
     @Override
     public void run(CommandContext context) throws Exception {
         if (context.getUser() != last) {
-            new TextMessage().addText(aandacht.get(current)).setMention(context.getUser()).sendMessage(context.getChannel());
+            new TextMessage().addText(aandacht.get(current)).setMention(context.getMember()).sendMessage(context.getChannel());
             last = context.getUser();
             if (current == aandacht.size()-1) {
                 current = 0;

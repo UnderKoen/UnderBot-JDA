@@ -1,9 +1,9 @@
-package nl.UnderKoen.UnderBot.commands.general;
+package nl.underkoen.underbot.commands.general;
 
-import nl.UnderKoen.UnderBot.Main;
-import nl.UnderKoen.UnderBot.commands.Command;
-import nl.UnderKoen.UnderBot.entities.CommandContext;
-import nl.UnderKoen.UnderBot.utils.Messages.TextMessage;
+import nl.underkoen.underbot.Main;
+import nl.underkoen.underbot.commands.Command;
+import nl.underkoen.underbot.entities.CommandContext;
+import nl.underkoen.underbot.utils.Messages.TextMessage;
 
 /**
  * Created by Under_Koen on 21-04-17.
@@ -35,7 +35,7 @@ public class InfoCommand implements Command {
 
     @Override
     public void run(CommandContext context) {
-        new TextMessage().setMention(context.getUser())
+        new TextMessage().setMention(context.getMember())
                 .addText("The current version of the bot is: " + Main.version)
                 .addText("Use /changelog for more detail")
                 .sendMessage(context.getChannel());

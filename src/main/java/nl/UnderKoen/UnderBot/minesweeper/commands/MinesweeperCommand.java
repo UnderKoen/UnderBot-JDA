@@ -1,8 +1,8 @@
-package nl.UnderKoen.UnderBot.minesweeper.commands;
+package nl.underkoen.underbot.minesweeper.commands;
 
-import nl.UnderKoen.UnderBot.commands.Command;
-import nl.UnderKoen.UnderBot.commands.MainCommand;
-import nl.UnderKoen.UnderBot.minesweeper.TileEmote;
+import nl.underkoen.underbot.commands.Command;
+import nl.underkoen.underbot.commands.MainCommand;
+import nl.underkoen.underbot.minesweeper.TileEmote;
 
 import java.util.Arrays;
 import java.util.List;
@@ -12,8 +12,8 @@ import java.util.List;
  */
 public class MinesweeperCommand implements MainCommand {
     private String command = "minesweeper";
-    private String usage = "/minesweeper";
-    private String description = "?";
+    private String usage = "/minesweeper [subcommand]";
+    private String description = "This is the main minesweeper command.";
 
     private Command[] subcommands = {new OpenCommand(), new FlagCommand(), new CreateCommand(), new ShowCommand(), new CheckCommand()};
 

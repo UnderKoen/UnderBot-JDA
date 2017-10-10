@@ -1,8 +1,8 @@
-package nl.UnderKoen.UnderBot.utils.Messages;
+package nl.underkoen.underbot.utils.Messages;
 
+import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.MessageEmbed;
-import net.dv8tion.jda.core.entities.User;
-import nl.UnderKoen.UnderBot.utils.ColorUtil;
+import nl.underkoen.underbot.utils.ColorUtil;
 
 import java.awt.*;
 import java.util.*;
@@ -14,7 +14,7 @@ import java.util.List;
 public class TextMessage implements UnderMessage {
     private Color color = ColorUtil.hexToColor("#2a6886");
 
-    private User user;
+    private Member user;
 
     private String message;
 
@@ -24,7 +24,7 @@ public class TextMessage implements UnderMessage {
 
     private java.util.List<MessageEmbed.Field> fields;
 
-    public TextMessage setMention(User user) {
+    public TextMessage setMention(Member user) {
         this.user = user;
         return this;
     }
@@ -79,7 +79,7 @@ public class TextMessage implements UnderMessage {
     }
 
     @Override
-    public User getAuthor() {
+    public Member getAuthor() {
         return user;
     }
 

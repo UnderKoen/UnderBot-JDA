@@ -1,13 +1,13 @@
-package nl.UnderKoen.UnderBot.commands.general;
+package nl.underkoen.underbot.commands.general;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import nl.UnderKoen.UnderBot.Main;
-import nl.UnderKoen.UnderBot.commands.Command;
-import nl.UnderKoen.UnderBot.entities.CommandContext;
-import nl.UnderKoen.UnderBot.utils.Messages.ErrorMessage;
-import nl.UnderKoen.UnderBot.utils.Messages.TextMessage;
+import nl.underkoen.underbot.Main;
+import nl.underkoen.underbot.commands.Command;
+import nl.underkoen.underbot.entities.CommandContext;
+import nl.underkoen.underbot.utils.Messages.ErrorMessage;
+import nl.underkoen.underbot.utils.Messages.TextMessage;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -61,7 +61,7 @@ public class ChangelogCommand implements Command {
 
         //Get file from resources folder
         ClassLoader classLoader = getClass().getClassLoader();
-        InputStream file = classLoader.getResourceAsStream("/resources/Changelog.json");
+        InputStream file = classLoader.getResourceAsStream("Changelog.json");
 
         try (Scanner scanner = new Scanner(file, "UTF-8")) {
 
@@ -104,7 +104,7 @@ public class ChangelogCommand implements Command {
         try {
             changelog = getChangelog(version);
         } catch (Exception e) {
-            new ErrorMessage(context.getUser(), "The changelog for " + version + " does not exist")
+            new ErrorMessage(context.getMember(), "The changelog for " + version + " does not exist")
                     .sendMessage(context.getChannel());
             return;
         }
@@ -127,14 +127,14 @@ public class ChangelogCommand implements Command {
             for (JsonElement obj : o.get("TODO").getAsJsonArray()) {
                 todo = todo + "- " + obj.getAsString() + "\n";
             }
-            TextMessage message = new TextMessage().setMention(context.getUser()).addText("The changelog of version " + version);
+            TextMessage message = new TextMessage().setMention(context.getMember()).addText("The changelog of version " + version);
             message.addField("Added", added, false);
             message.addField("Removed", removed, false);
             message.addField("Fixed", fixed, false);
             message.addField("Todo", todo, false);
             message.sendMessage(context.getChannel());
         } catch (Exception e) {
-            new ErrorMessage(context.getUser(), "Something went wrong")
+            new ErrorMessage(context.getMember(), "Something went wrong")
                     .sendMessage(context.getChannel());
         }
     }

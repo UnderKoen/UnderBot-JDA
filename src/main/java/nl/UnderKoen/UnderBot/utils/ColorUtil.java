@@ -1,4 +1,4 @@
-package nl.UnderKoen.UnderBot.utils;
+package nl.underkoen.underbot.utils;
 
 import java.awt.*;
 

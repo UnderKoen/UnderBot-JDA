@@ -1,14 +1,14 @@
-package nl.UnderKoen.UnderBot.commands;
+package nl.underkoen.underbot.commands;
 
-import nl.UnderKoen.UnderBot.commands.moderator.TimeoutCommand;
-import nl.UnderKoen.UnderBot.entities.CommandContext;
-import nl.UnderKoen.UnderBot.entities.impl.CommandContextImpl;
-import nl.UnderKoen.UnderBot.utils.Messages.ErrorMessage;
-import nl.UnderKoen.UnderBot.utils.Messages.HelpMessage;
-import nl.UnderKoen.UnderBot.utils.RoleUtil;
+import nl.underkoen.underbot.entities.CommandContext;
+import nl.underkoen.underbot.entities.impl.CommandContextImpl;
+import nl.underkoen.underbot.utils.Messages.ErrorMessage;
+import nl.underkoen.underbot.utils.Messages.HelpMessage;
+import nl.underkoen.underbot.utils.RoleUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -20,47 +20,66 @@ public interface MainCommand extends Command {
     @Override
     default void setup() throws Exception {
         List<Command> commands = getSubcommands();
-        for (Command command: commands) {
+        for (Command command : commands) {
             command.setup();
         }
     }
 
     @Override
     default void run(CommandContext context) throws Exception {
-        List<Command> commands = getSubcommands();
+        List<Command> subcommands = getSubcommands();
         if (context.getArgs().length == 0) {
-            new HelpMessage().addSubCommands(commands).addText("All availble subcommands for /" + getCommand()).sendMessage(context.getChannel());
+            new HelpMessage().addCommand(this).showSubcommands(true).sendMessage(context.getChannel());
         } else {
-            for (Command command: commands) {
-                if (command.getCommand().contentEquals(context.getArgs()[0])) {
-                    if (RoleUtil.getHighestRole(context.getMember()).getPosition() < command.getMinimumRole()) {
-                        new ErrorMessage(context.getUser(), "The minimum role for /" + command.getCommand() + " is " +
-                                RoleUtil.getRole(context.getGuild(), command.getMinimumRole()).getName()).sendMessage(context.getChannel());
-                        context.getMessage().delete().complete();
-                        return;
-                    }
-                    List<String> newArgs = Arrays.asList(context.getArgs());
-                    newArgs = new ArrayList<>(newArgs);
-                    newArgs.remove(0);
-
-                    List<String> newRawArgs = Arrays.asList(context.getRawArgs());
-                    newRawArgs = new ArrayList<>(newRawArgs);
-                    newRawArgs.remove(0);
-                    command.run(new CommandContextImpl()
-                            .setArgs(newArgs.toArray(new String[0]))
-                            .setRawArgs(newRawArgs.toArray(new String[0]))
-                            .setChannel(context.getChannel())
-                            .setCommand(command.getCommand())
-                            .setGuild(context.getGuild())
-                            .setMember(context.getMember())
-                            .setUser(context.getUser())
-                            .setPrefix(context.getPrefix())
-                            .setMessage(context.getMessage())
-                    );
-                    return;
+            HashMap<String, Command> commands = new HashMap<>();
+            HashMap<String, String> aliases = new HashMap<>();
+            subcommands.forEach(command -> {
+                commands.put(command.getCommand(), command);
+            });
+            subcommands.forEach(command -> {
+                for (String alias : command.getAliases()) {
+                    if (commands.containsKey(alias) || aliases.containsKey(alias)) continue;
+                    aliases.put(alias, command.getCommand());
                 }
+            });
+
+            String commandName = context.getArgs()[0];
+
+            if (!commands.containsKey(commandName) && !aliases.containsKey(commandName)) {
+                new HelpMessage().addCommand(this).showSubcommands(true).sendMessage(context.getChannel());
+                return;
             }
-            new HelpMessage().addSubCommands(commands).addText("All availble subcommands for /" + getCommand()).sendMessage(context.getChannel());
+            ;
+
+            if (!commands.containsKey(commandName) && aliases.containsKey(commandName))
+                commandName = aliases.get(commandName);
+
+            Command command = commands.get(commandName);
+
+            if (RoleUtil.getHighestRole(context.getMember()).getPosition() < command.getMinimumRole()) {
+                new ErrorMessage(context.getMember(), "The minimum role for /" + command.getCommand() + " is " +
+                        RoleUtil.getRole(context.getGuild(), command.getMinimumRole()).getName()).sendMessage(context.getChannel());
+                context.getMessage().delete().complete();
+                return;
+            }
+            List<String> newArgs = Arrays.asList(context.getArgs());
+            newArgs = new ArrayList<>(newArgs);
+            newArgs.remove(0);
+
+            List<String> newRawArgs = Arrays.asList(context.getRawArgs());
+            newRawArgs = new ArrayList<>(newRawArgs);
+            newRawArgs.remove(0);
+            command.run(new CommandContextImpl()
+                    .setArgs(newArgs.toArray(new String[0]))
+                    .setRawArgs(newRawArgs.toArray(new String[0]))
+                    .setChannel(context.getChannel())
+                    .setCommand(command.getCommand())
+                    .setGuild(context.getGuild())
+                    .setMember(context.getMember())
+                    .setUser(context.getUser())
+                    .setPrefix(context.getPrefix())
+                    .setMessage(context.getMessage())
+            );
         }
     }
 }

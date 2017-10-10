@@ -1,4 +1,4 @@
-package nl.UnderKoen.UnderBot.music;
+package nl.underkoen.underbot.music;
 
 import com.sedmelluq.discord.lavaplayer.player.AudioPlayerManager;
 import com.sedmelluq.discord.lavaplayer.player.DefaultAudioPlayerManager;
@@ -12,10 +12,8 @@ import net.dv8tion.jda.core.events.guild.voice.GuildVoiceLeaveEvent;
 import net.dv8tion.jda.core.events.guild.voice.GuildVoiceMoveEvent;
 import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import net.dv8tion.jda.core.managers.AudioManager;
-import nl.UnderKoen.UnderBot.Main;
-import nl.UnderKoen.UnderBot.entities.CommandContext;
-import nl.UnderKoen.UnderBot.music.commands.MusicCommand;
-import nl.UnderKoen.UnderBot.utils.Messages.TextMessage;
+import nl.underkoen.underbot.entities.CommandContext;
+import nl.underkoen.underbot.utils.Messages.TextMessage;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -97,6 +95,10 @@ public class MusicHandler extends ListenerAdapter {
 
     public static void setVolume(Guild guild, int volume) {
         getGuildAudioPlayer(guild).player.setVolume(volume);
+    }
+
+    public static int getVolume(Guild guild) {
+        return getGuildAudioPlayer(guild).player.getVolume();
     }
 
     public static AudioTrack[] getQueue(Guild guild) {
