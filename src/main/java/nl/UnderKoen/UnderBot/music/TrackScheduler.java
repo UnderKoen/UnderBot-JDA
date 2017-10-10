@@ -51,9 +51,9 @@ public class TrackScheduler extends AudioEventAdapter {
     }
 
     public void nextTrack() {
-        if (queue.isEmpty() && defaultTrack == null) return;
+        if (queue.isEmpty() && defaultTrack == null && player.getPlayingTrack() == null) return;
         AudioTrack track;
-        if (queue.isEmpty()) {
+        if (queue.isEmpty() && defaultTrack != null) {
             track = defaultTrack.makeClone();
             defaultTrack = track;
             player.startTrack(track, true);
@@ -61,7 +61,9 @@ public class TrackScheduler extends AudioEventAdapter {
             track = queue.poll();
         }
         player.startTrack(track, false);
-        new TextMessage().addText("Started playing [" + track.getInfo().title + "](" + track.getInfo().uri + ")").sendMessage(MusicHandler.channel);
+        if (track != null) {
+            new TextMessage().addText("Started playing [" + track.getInfo().title + "](" + track.getInfo().uri + ")").sendMessage(MusicHandler.channel);
+        }
     }
 
     @Override
