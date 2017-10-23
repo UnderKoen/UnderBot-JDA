@@ -3,11 +3,16 @@ package nl.underkoen.underbot;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
+import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Game;
+import net.dv8tion.jda.core.entities.Role;
+import net.dv8tion.jda.core.entities.impl.RoleImpl;
+import net.dv8tion.jda.core.managers.GuildController;
 import nl.underkoen.underbot.commands.Command;
 import nl.underkoen.underbot.minesweeper.commands.MinesweeperCommand;
 import nl.underkoen.underbot.music.commands.MusicCommand;
 import nl.underkoen.underbot.utils.KeyLoaderUtil;
+import nl.underkoen.underbot.utils.RoleUtil;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
@@ -28,7 +33,7 @@ public class Main {
 
     public static KeyLoaderUtil keys;
 
-    public static String version = "0.2.6";
+    public static String version = "0.2.7";
 
     public static void main(String[] args) throws Exception {
         if (args.length == 0) {
@@ -70,6 +75,7 @@ public class Main {
         //for (Role role : jda.getGuilds().get(0).getRoles()) {
         //    System.out.println(role.getName() + " -=- " + role.getPosition());
         //}
+
         initializeAllCommands("nl.underkoen.underbot.commands", handler);
         handler.initializeCommand(new MusicCommand());
         handler.initializeCommand(new MinesweeperCommand());

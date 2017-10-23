@@ -7,8 +7,8 @@ import nl.underkoen.underbot.utils.YoutubeUtil;
  * Created by Under_Koen on 09-05-17.
  */
 public class Livestreamcheck extends Thread {
-    public static boolean check = false;
-    public static TextChannel channel;
+    public boolean check = true;
+    public TextChannel channel;
 
     public static String channelId = "UC8cgXXpepeB2CWfxdy7uGVg";
 
@@ -29,5 +29,13 @@ public class Livestreamcheck extends Thread {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void stopCheck() {
+        check = false;
+    }
+
+    public void setChannel(TextChannel channel) {
+        this.channel = channel;
     }
 }

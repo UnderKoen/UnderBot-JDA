@@ -15,9 +15,12 @@ import java.util.regex.Pattern;
  */
 public class LivestreamcheckCommand implements Command {
     private String command = "livestreamcheck";
-    private String usage = "/livestreamcheck [boolean] (textChannel)]";
+    private String usage = "/livestreamcheck (textChannel)]";
     private String description = "Enable/disable livestreamcheck in (textchannel).";
     private int minimumRole = Roles.MOD.role;
+
+    private boolean checking = false;
+    private Livestreamcheck thread;
 
     @Override
     public int getMinimumRole() {
@@ -44,40 +47,37 @@ public class LivestreamcheckCommand implements Command {
 
     @Override
     public void run(CommandContext context) throws Exception {
-        if (context.getRawArgs().length < 1) {
-            new ErrorMessage(context.getMember(), "This command needs arguments to work.")
-                    .sendMessage(context.getChannel());
-            return;
-        }
-        if (!(context.getArgs()[0].toLowerCase().contains("true") || context.getArgs()[0].toLowerCase().contains("false"))) {
-            new ErrorMessage(context.getMember(), context.getArgs()[0] + " is not a valid boolean")
-                    .sendMessage(context.getChannel());
-            return;
-        }
-        Livestreamcheck.check = Boolean.parseBoolean(context.getArgs()[0]);
-        if (context.getArgs().length >= 2) {
-            Pattern pattern = Pattern.compile("<#(\\d+)>");
-            Matcher matcher = pattern.matcher(context.getRawArgs()[1]);
-            matcher.find();
-            try {
-                Livestreamcheck.channel = context.getGuild().getTextChannelById(matcher.group(1));
-            } catch (Exception e) {
-                new ErrorMessage(context.getMember(), context.getRawArgs()[1] + " is not a valid channel.")
+        if (!checking) {
+            checking = true;
+            thread = new Livestreamcheck();
+
+            if (context.getArgs().length >= 1) {
+                Pattern pattern = Pattern.compile("<#(\\d+)>");
+                Matcher matcher = pattern.matcher(context.getRawArgs()[0]);
+                matcher.find();
+                try {
+                    thread.setChannel(context.getGuild().getTextChannelById(matcher.group(1)));
+                } catch (Exception e) {
+                    new ErrorMessage(context.getMember(), context.getRawArgs()[0] + " is not a valid channel.")
+                            .sendMessage(context.getChannel());
+                    return;
+                }
+            } else {
+                thread.setChannel(context.getChannel());
+            }
+            thread.start();
+            if (thread.check) {
+                new TextMessage().setMention(context.getMember())
+                        .addText("Enabled livestream check for " + thread.channel.getAsMention() + ".")
                         .sendMessage(context.getChannel());
-                return;
+            } else {
+                new TextMessage().setMention(context.getMember())
+                        .addText("Disabled livestream check for " + thread.channel.getAsMention() + ".")
+                        .sendMessage(context.getChannel());
             }
         } else {
-            Livestreamcheck.channel = context.getChannel();
-        }
-        new Livestreamcheck().start();
-        if (Livestreamcheck.check) {
-            new TextMessage().setMention(context.getMember())
-                    .addText("Enabled livestream check for " + Livestreamcheck.channel.getAsMention() + ".")
-                    .sendMessage(context.getChannel());
-        } else {
-            new TextMessage().setMention(context.getMember())
-                    .addText("Disabled livestream check for " + Livestreamcheck.channel.getAsMention() + ".")
-                    .sendMessage(context.getChannel());
+            thread.stopCheck();
+            checking = false;
         }
 
     }

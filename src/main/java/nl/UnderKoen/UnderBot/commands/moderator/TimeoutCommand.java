@@ -1,10 +1,18 @@
 package nl.underkoen.underbot.commands.moderator;
 
-import net.dv8tion.jda.core.entities.Member;
-import net.dv8tion.jda.core.entities.User;
+import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.core.entities.*;
+import net.dv8tion.jda.core.events.channel.category.CategoryCreateEvent;
+import net.dv8tion.jda.core.events.channel.text.TextChannelCreateEvent;
+import net.dv8tion.jda.core.events.channel.voice.VoiceChannelCreateEvent;
+import net.dv8tion.jda.core.hooks.ListenerAdapter;
+import net.dv8tion.jda.core.managers.GuildController;
+import net.dv8tion.jda.core.managers.GuildManager;
+import nl.underkoen.underbot.Main;
 import nl.underkoen.underbot.Roles;
 import nl.underkoen.underbot.commands.Command;
 import nl.underkoen.underbot.entities.CommandContext;
+import nl.underkoen.underbot.utils.ColorUtil;
 import nl.underkoen.underbot.utils.Messages.ErrorMessage;
 import nl.underkoen.underbot.utils.Messages.TextMessage;
 
@@ -13,6 +21,9 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.time.temporal.TemporalUnit;
 import java.util.HashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,12 +36,14 @@ public class TimeoutCommand implements Command {
     private String description = "Time out a user so he can't talk.";
     private int minimumRole = Roles.MOD.role;
 
+    private HashMap<Guild, Role> timeoutRoles = new HashMap<>();
+    private ExecutorService timeouts;
+    //private static HashMap<User, Timestamp> timeouts = new HashMap<>();
+
     @Override
     public int getMinimumRole() {
         return minimumRole;
     }
-
-    private static HashMap<User, Timestamp> timeouts = new HashMap<User, Timestamp>();
 
     @Override
     public String getCommand() {
@@ -48,12 +61,74 @@ public class TimeoutCommand implements Command {
     }
 
     @Override
-    public void setup() throws Exception {}
+    public void setup() throws Exception {
+        timeouts = Executors.newCachedThreadPool();
+        for (Guild guild: Main.jda.getGuilds()) {
+            GuildController guildController = new GuildController(guild);
+            Role timeoutRole;
+            if (guild.getRolesByName("Timeouted", false).isEmpty()) {
+                timeoutRole = guildController.createRole().setName("Timeouted").setColor(ColorUtil.hexToColor("#790606")).complete();
+            } else {
+                timeoutRole = guild.getRolesByName("Timeouted", false).get(0);
+            }
+            for (TextChannel textChannel: guild.getTextChannels()) {
+                if (textChannel.getPermissionOverride(timeoutRole) == null) {
+                    textChannel.createPermissionOverride(timeoutRole).complete();
+                }
+                textChannel.getPermissionOverride(timeoutRole).getManager().deny(Permission.MESSAGE_WRITE,
+                        Permission.MESSAGE_ADD_REACTION).complete();
+            }
+            for (VoiceChannel voiceChannel: guild.getVoiceChannels()) {
+                if (voiceChannel.getPermissionOverride(timeoutRole) == null) {
+                    voiceChannel.createPermissionOverride(timeoutRole).complete();
+                }
+                voiceChannel.getPermissionOverride(timeoutRole).getManager().deny(Permission.VOICE_SPEAK).complete();
+            }
+            for (Category category: guild.getCategories()) {
+                if (category.getPermissionOverride(timeoutRole) == null) {
+                    category.createPermissionOverride(timeoutRole).complete();
+                }
+                category.getPermissionOverride(timeoutRole).getManager().deny(Permission.MESSAGE_WRITE,
+                        Permission.MESSAGE_ADD_REACTION,
+                        Permission.VOICE_SPEAK).complete();
+            }
+            timeoutRoles.put(guild, timeoutRole);
+        }
+        Main.jda.addEventListener(new ListenerAdapter() {
+            @Override
+            public void onTextChannelCreate(TextChannelCreateEvent event) {
+                Role timeoutRole = timeoutRoles.get(event.getGuild());
+                if (event.getChannel().getPermissionOverride(timeoutRole) == null) {
+                    event.getChannel().createPermissionOverride(timeoutRole).complete();
+                }
+                event.getChannel().getPermissionOverride(timeoutRole).getManager().deny(Permission.MESSAGE_WRITE,
+                        Permission.MESSAGE_ADD_REACTION).complete();
+            }
+
+            @Override
+            public void onVoiceChannelCreate(VoiceChannelCreateEvent event) {
+                Role timeoutRole = timeoutRoles.get(event.getGuild());
+                if (event.getChannel().getPermissionOverride(timeoutRole) == null) {
+                    event.getChannel().createPermissionOverride(timeoutRole).complete();
+                }
+                event.getChannel().getPermissionOverride(timeoutRole).getManager().deny(Permission.VOICE_SPEAK).complete();
+            }
+
+            @Override
+            public void onCategoryCreate(CategoryCreateEvent event) {
+                Role timeoutRole = timeoutRoles.get(event.getGuild());
+                if (event.getCategory().getPermissionOverride(timeoutRole) == null) {
+                    event.getCategory().createPermissionOverride(timeoutRole).complete();
+                }
+                event.getCategory().getPermissionOverride(timeoutRole).getManager().deny(Permission.VOICE_SPEAK).complete();
+            }
+        });
+    }
 
     @Override
     public void run(CommandContext context) {
         if (context.getRawArgs().length == 0 || context.getRawArgs().length < 2) {
-            new ErrorMessage(context.getMember(), ("This command needs " +  ((context.getRawArgs().length == 0)? "" : "more") +" arguments to work"))
+            new ErrorMessage(context.getMember(), ("This command needs " + ((context.getRawArgs().length == 0) ? "" : "more") + " arguments to work"))
                     .sendMessage(context.getChannel());
             return;
         }
@@ -72,7 +147,7 @@ public class TimeoutCommand implements Command {
         }
         pattern = Pattern.compile("(\\d+)([smhdwMy])");
         matcher = pattern.matcher(context.getRawArgs()[1]);
-        LocalDateTime lenght = new Timestamp(System.currentTimeMillis()).toLocalDateTime();
+        LocalDateTime length = new Timestamp(System.currentTimeMillis()).toLocalDateTime();
         while (matcher.find()) {
             TemporalUnit unit = null;
             switch (matcher.group(2)) {
@@ -98,22 +173,39 @@ public class TimeoutCommand implements Command {
                     unit = ChronoUnit.YEARS;
                     break;
             }
-            lenght = lenght.plus(Integer.parseInt(matcher.group(1)), unit);
+            length = length.plus(Integer.parseInt(matcher.group(1)), unit);
         }
         if (!matcher.replaceAll("").isEmpty()) {
-            new ErrorMessage(context.getMember(), context.getRawArgs()[1] + " is not a valid lenght.")
+            new ErrorMessage(context.getMember(), context.getRawArgs()[1] + " is not a valid length.")
                     .sendMessage(context.getChannel());
             return;
         }
-        timeouts.put(member.getUser(), Timestamp.valueOf(lenght));
+
+        new GuildController(member.getGuild()).addSingleRoleToMember(member, timeoutRoles.get(member.getGuild())).complete();
+
+        LocalDateTime finalLength = length;
+        Member finalMember = member;
+        timeouts.submit(() -> {
+            Timestamp until = Timestamp.valueOf(finalLength);
+            while (new Timestamp(System.currentTimeMillis()).before(until)) {
+                try {
+                    timeouts.awaitTermination(1, TimeUnit.SECONDS);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            GuildController guildController = new GuildController(finalMember.getGuild());
+            guildController.removeSingleRoleFromMember(finalMember, timeoutRoles.get(finalMember.getGuild())).complete();
+        });
+
         TextMessage msg = new TextMessage().addText("Timeout information")
                 .setMention(context.getMember())
                 .addField("User", member.getAsMention(), false)
-                .addField("Until", Timestamp.valueOf(lenght).toLocaleString(), false);
+                .addField("Until", Timestamp.valueOf(length).toLocaleString(), false);
         if (context.getRawArgs().length >= 3) {
             StringBuilder str = new StringBuilder();
             int i = 1;
-            for (String arg: context.getRawArgs()) {
+            for (String arg : context.getRawArgs()) {
                 if (i <= 2) {
                     i++;
                     continue;
@@ -124,10 +216,5 @@ public class TimeoutCommand implements Command {
             msg.addField("Reason", str.toString(), false);
         }
         msg.sendMessage(context.getChannel());
-    }
-
-    public static boolean isTimeouted(User user) {
-        if (!timeouts.containsKey(user)) return false;
-        return timeouts.get(user).after(new Timestamp(System.currentTimeMillis()));
     }
 }

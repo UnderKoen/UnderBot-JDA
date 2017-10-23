@@ -4,7 +4,7 @@ package nl.underkoen.underbot;
  * Created by Under_Koen on 10-05-17.
  */
 public enum Roles {
-    EVERYONE(-1), NIGHTBOT(0), SUPPORTER(1), SUPER_SUPPORTER(2), MOD(3), YOUTUBER(4), ADMIN(5);
+    EVERYONE(-1), TIMEOUTED(0), UNDERBOT(1), NIGHTBOT(2), SUPPORTER(3), SUPER_SUPPORTER(4), MOD(5), YOUTUBER(6), ADMIN(7);
 
     public int role;
 

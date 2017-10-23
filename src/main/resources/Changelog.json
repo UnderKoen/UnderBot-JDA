@@ -1,6 +1,6 @@
 {
-  "ADDED":["Support for aliases for subcommands", "/music volume returns with no arg the volume", "/music searchplay [search...]"],
+  "ADDED":["Role for timeout instea of only deletion"],
   "REMOVED": [],
-  "FIXED":["When not having a nick name the footer of a response does not exist", "fixed that when there are none songs in queue you still can skip"],
-  "TODO": ["auto delete msg when stream is over", "Customize message style", "Databases for timeouts and message style"]
+  "FIXED":["Livestreamcheck bug"],
+  "TODO": ["multiple guilds support","auto delete msg when stream is over", "Customize message style", "Databases for timeouts and message style"]
 }

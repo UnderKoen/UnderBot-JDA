@@ -23,7 +23,7 @@ repositories {
 dependencies {
     //compile 'mysql:mysql-connector-java'
     shadow 'junit:junit:3.8.2'
-    compile group: 'net.dv8tion', name: 'JDA', version: '3.3.1_280'
+    compile group: 'net.dv8tion', name: 'JDA', version: '3.3.1_294'
     compile group: 'com.google.code.gson', name: 'gson', version: '2.3.1'
     compile group: 'org.twitter4j', name: 'twitter4j-stream', version: '[4.0,)'
     compile 'com.sedmelluq:lavaplayer:1.2.36'

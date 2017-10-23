@@ -55,10 +55,6 @@ public class CommandHandler extends ListenerAdapter {
     public void onMessageReceived(MessageReceivedEvent event) {
         String messageContent = event.getMessage().getContent();
         String messageRawContent = event.getMessage().getRawContent();
-        if (TimeoutCommand.isTimeouted(event.getAuthor())) {
-            event.getMessage().delete().complete();
-            return;
-        }
 
         if (!messageContent.startsWith(prefix)) return;
 
