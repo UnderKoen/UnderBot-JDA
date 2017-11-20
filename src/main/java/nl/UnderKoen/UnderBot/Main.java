@@ -43,7 +43,7 @@ public class Main {
 
     public static KeyLoaderUtil keys;
 
-    public static String version = "0.3.1";
+    public static String version = "0.3.2";
 
     public static void main(String[] args) throws Exception {
         if (args.length == 0) {
