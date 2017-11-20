@@ -118,7 +118,7 @@ public class HelpMessage implements UnderMessage {
                     mainCommands.add(command);
                 }
             });
-            if (!builder.toString().isEmpty()) msg.addField(new Field(role1.getName(), builder.toString(), false));
+            if (!builder.toString().isEmpty()) msg.addField(new Field((role1.getPosition() != -1) ? role1.getName() : "Everyone", builder.toString(), false));
         });
         mainCommands.forEach(command -> {
             StringBuilder builder = new StringBuilder();

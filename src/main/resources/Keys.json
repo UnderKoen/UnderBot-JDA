@@ -6,5 +6,9 @@
     "consumerSecret": "",
     "token": "",
     "tokenSecret": ""
+  },
+  "hitbox": {
+    "name": "",
+    "pass": ""
   }
 }

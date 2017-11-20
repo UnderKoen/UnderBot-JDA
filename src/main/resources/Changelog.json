@@ -1,6 +1,6 @@
 {
-  "ADDED":["Role for timeout instea of only deletion"],
+  "ADDED":["Too much hitbox api shit", "hitbox bot", "for hitbox bot: !linkdiscord", "automatic role system"],
   "REMOVED": [],
-  "FIXED":["Livestreamcheck bug"],
+  "FIXED":[],
   "TODO": ["multiple guilds support","auto delete msg when stream is over", "Customize message style", "Databases for timeouts and message style"]
 }

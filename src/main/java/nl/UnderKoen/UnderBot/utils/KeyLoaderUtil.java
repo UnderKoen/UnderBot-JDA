@@ -25,6 +25,13 @@ public class KeyLoaderUtil {
         return keys.get("youtube_key").getAsString();
     }
 
+    public String getHitboxName() {
+        return keys.getAsJsonObject("hitbox").get("name").getAsString();
+    }
+    public String getHitboxPass() {
+        return keys.getAsJsonObject("hitbox").get("pass").getAsString();
+    }
+
     /**
      * consumerKey, consumerSecret, token, tokenSecret
      */

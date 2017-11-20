@@ -112,7 +112,7 @@ public class CommandHandler extends ListenerAdapter {
         try {
             command.run(context);
         } catch (Exception ex) {
-            new ErrorMessage(context.getMember(), "A error occured").sendMessage(context.getChannel());
+            new ErrorMessage(context.getMember(), "An error occured").sendMessage(context.getChannel());
             ex.printStackTrace();
         }
 

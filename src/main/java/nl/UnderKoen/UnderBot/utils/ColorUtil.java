@@ -7,9 +7,10 @@ import java.awt.*;
  */
 public class ColorUtil {
     public static Color hexToColor(String colorStr) {
+        colorStr = colorStr.replace("#","");
         return new Color(
-                Integer.valueOf(colorStr.substring(1, 3), 16),
-                Integer.valueOf(colorStr.substring(3, 5), 16),
-                Integer.valueOf(colorStr.substring(5, 7), 16));
+                Integer.valueOf(colorStr.substring(0, 2), 16),
+                Integer.valueOf(colorStr.substring(2, 4), 16),
+                Integer.valueOf(colorStr.substring(4, 6), 16));
     }
 }

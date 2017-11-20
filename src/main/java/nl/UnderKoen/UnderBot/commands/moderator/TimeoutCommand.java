@@ -66,10 +66,10 @@ public class TimeoutCommand implements Command {
         for (Guild guild: Main.jda.getGuilds()) {
             GuildController guildController = new GuildController(guild);
             Role timeoutRole;
-            if (guild.getRolesByName("Timeouted", false).isEmpty()) {
-                timeoutRole = guildController.createRole().setName("Timeouted").setColor(ColorUtil.hexToColor("#790606")).complete();
+            if (guild.getRolesByName("Muted", false).isEmpty()) {
+                timeoutRole = guildController.createRole().setName("Muted").setColor(ColorUtil.hexToColor("#790606")).complete();
             } else {
-                timeoutRole = guild.getRolesByName("Timeouted", false).get(0);
+                timeoutRole = guild.getRolesByName("Muted", false).get(0);
             }
             for (TextChannel textChannel: guild.getTextChannels()) {
                 if (textChannel.getPermissionOverride(timeoutRole) == null) {

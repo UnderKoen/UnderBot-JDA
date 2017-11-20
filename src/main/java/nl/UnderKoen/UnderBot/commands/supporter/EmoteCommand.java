@@ -9,6 +9,7 @@ import nl.underkoen.underbot.entities.CommandContext;
 import nl.underkoen.underbot.utils.Messages.ErrorMessage;
 import nl.underkoen.underbot.utils.Messages.TextMessage;
 
+import javax.xml.soap.Text;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.InputStream;
@@ -124,13 +125,17 @@ public class EmoteCommand implements Command {
         String text = "";
         JsonParser parser = new JsonParser();
         JsonObject o = parser.parse(getEmotes()).getAsJsonObject();
+        TextMessage msg = new TextMessage().setMention(context.getMember());
         for (char Char: args.toCharArray()) {
-            if (o.has(Char + "")) {
-                text = text + o.get(Char + "").getAsString() + " ";
-            } else {
-                text = text + o.get("none").getAsString() + " ";
-            }
+            String add = (o.has(Char + "")) ? o.get(Char + "").getAsString() : o.get("none").getAsString();
+            text = text + add + " ";
         }
-        new TextMessage().addText(text).setMention(context.getMember()).sendMessage(context.getChannel());
+        if (text.length() < 2048) {
+            msg.addText(text).sendMessage(context.getChannel());
+        } else {
+            new TextMessage().setMention(context.getMember())
+                    .addText("The amount of char's in emote form is over 2048 and can't be post sorry.")
+                    .sendMessage(context.getChannel());
+        }
     }
 }

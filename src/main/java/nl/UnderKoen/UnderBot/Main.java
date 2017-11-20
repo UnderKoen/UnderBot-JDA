@@ -1,14 +1,20 @@
 package nl.underkoen.underbot;
 
+import jdk.nashorn.internal.runtime.regexp.joni.Regex;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Game;
+import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.impl.RoleImpl;
 import net.dv8tion.jda.core.managers.GuildController;
 import nl.underkoen.underbot.commands.Command;
+import nl.underkoen.underbot.commands.hitbox.LinkDiscord;
+import nl.underkoen.underbot.hitbox.ChatMsg;
+import nl.underkoen.underbot.hitbox.HitboxUtil;
+import nl.underkoen.underbot.hitbox.UserInfo;
 import nl.underkoen.underbot.minesweeper.commands.MinesweeperCommand;
 import nl.underkoen.underbot.music.commands.MusicCommand;
 import nl.underkoen.underbot.utils.KeyLoaderUtil;
@@ -20,6 +26,9 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
@@ -30,10 +39,11 @@ public class Main {
 
     public static JDA jda;
     public static CommandHandler handler;
+    public static HitboxUtil hitboxUtil;
 
     public static KeyLoaderUtil keys;
 
-    public static String version = "0.2.7";
+    public static String version = "0.3.1";
 
     public static void main(String[] args) throws Exception {
         if (args.length == 0) {
@@ -61,6 +71,7 @@ public class Main {
             }
             keys = new KeyLoaderUtil(FileUtils.readFileToString(file, Charset.defaultCharset()));
         }
+        hitboxUtil = new HitboxUtil();
 
         handler = new CommandHandler("/");
         try {
@@ -80,6 +91,8 @@ public class Main {
         handler.initializeCommand(new MusicCommand());
         handler.initializeCommand(new MinesweeperCommand());
         jda.getPresence().setGame(Game.of("/help -> for help"));
+
+        hitboxUtil.addListener(new LinkDiscord());
     }
 
     public static void initializeAllCommands(String pckgname, CommandHandler handler) {
